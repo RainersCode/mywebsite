@@ -5,6 +5,9 @@ try {
   // ignore error
 }
 
+// Import MiniCssExtractPlugin at the top level
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -20,6 +23,17 @@ const nextConfig = {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
+  },
+  webpack: (config, { isServer }) => {
+    // Add the plugin to the webpack config
+    config.plugins.push(
+      new MiniCssExtractPlugin({
+        filename: 'static/css/[name].[contenthash].css',
+        chunkFilename: 'static/css/[id].[contenthash].css',
+      })
+    );
+    
+    return config;
   },
 }
 

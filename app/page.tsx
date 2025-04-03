@@ -4,6 +4,7 @@ import IntroSection from "@/components/intro-section"
 import PortfolioShowcase from "@/components/portfolio-showcase"
 import ServicesSection from "@/components/services-section"
 import ProcessSection from "@/components/process-section"
+import TestimonialsSection from "@/components/testimonials-section"
 import CtaSection from "@/components/cta-section"
 import ContactSection from "@/components/contact-section"
 import Footer from "@/components/footer"
@@ -18,6 +19,7 @@ export default function Home() {
         <PortfolioShowcase />
         <ServicesSection />
         <ProcessSection />
+        <TestimonialsSection />
         <CtaSection />
         <ContactSection />
       </main>

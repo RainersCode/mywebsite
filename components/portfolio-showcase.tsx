@@ -5,94 +5,12 @@ import { motion, useScroll, useTransform } from "framer-motion"
 import LaptopAnimation from "./laptop-animation"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { CardSpotlight } from "@/components/ui/card-spotlight"
 
 // Register the ScrollTrigger plugin
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
-
-// Silver trail component - like a small comet or shooting star
-const SilverTrail = ({ index }: { index: number }) => {
-  // Random size for the trail head - increased sizes
-  const headSize = Math.random() * 3 + 1.5; // 1.5-4.5px head (increased)
-  const tailLength = headSize * (Math.random() * 18 + 12); // proportional tail length (increased)
-  
-  // Random angle for diagonal movement
-  const angleVariation = Math.random() * 40 - 20; // -20 to +20 degrees variation
-  const baseAngle = 45 + angleVariation; // Around 45 degrees (diagonal)
-  
-  // Random duration between 10-30 seconds for slightly faster movement
-  const duration = 10 + Math.random() * 20;
-  
-  // Random start positions
-  // Start either from top or left side for diagonal movement
-  const startFromTop = Math.random() > 0.5;
-  const startX = startFromTop ? Math.random() * 100 : -tailLength;
-  const startY = startFromTop ? -tailLength : Math.random() * 100;
-  
-  // Calculate end position based on angle and travel distance
-  const travelDistance = 120 + Math.random() * 30; // 120-150% of screen size
-  const endX = startX + travelDistance * Math.cos(baseAngle * Math.PI / 180);
-  const endY = startY + travelDistance * Math.sin(baseAngle * Math.PI / 180);
-  
-  // Delay so trails don't all appear at once
-  const delay = Math.random() * 15;
-  
-  // Silver color with varying opacity - increased
-  const opacity = Math.random() * 0.4 + 0.5; // 0.5-0.9 opacity (increased)
-  
-  // Rotation to match movement angle
-  const rotation = (baseAngle - 45) + 90; // Transform from math angle to CSS rotation
-  
-  return (
-    <motion.div
-      className="absolute z-20 pointer-events-none"
-      style={{
-        left: `${startX}%`,
-        top: `${startY}%`,
-        rotate: `${rotation}deg`,
-        opacity: 0
-      }}
-      animate={{
-        left: `${endX}%`,
-        top: `${endY}%`,
-        opacity: [0, opacity, opacity, 0]
-      }}
-      transition={{
-        duration: duration,
-        repeat: Infinity,
-        delay: delay,
-        ease: "linear",
-        opacity: {
-          times: [0, 0.05, 0.95, 1]
-        }
-      }}
-    >
-      {/* The trail head (circle) */}
-      <div 
-        className="absolute rounded-full bg-[#e0e9f5]" // Brighter color
-        style={{
-          width: headSize,
-          height: headSize,
-          boxShadow: `0 0 ${headSize * 3}px 2px rgba(224, 233, 245, 0.9)`
-        }}
-      />
-      
-      {/* The trail tail (gradient line) */}
-      <div 
-        className="absolute bg-gradient-to-t from-transparent to-[#c6d4e3]" // Brighter gradient
-        style={{
-          width: headSize / 1.2, // Wider than before
-          height: tailLength,
-          transformOrigin: 'center top',
-          top: headSize / 2,
-          left: headSize / 3,
-          filter: 'blur(0.5px)'
-        }}
-      />
-    </motion.div>
-  );
-};
 
 // Portfolio items
 const portfolioItems = [
@@ -250,93 +168,7 @@ export default function PortfolioShowcase() {
       ref={sectionRef}
       className="py-8 md:py-12 bg-gradient-to-b from-[#0f1520] to-[#141b27] relative overflow-hidden"
     >
-      {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div 
-          className="absolute top-0 left-1/4 w-[1px] h-full bg-gradient-to-b from-transparent via-[#2a3546] to-transparent shadow-[0_0_8px_0px_#2a3546]" 
-          animate={{
-            y: ["-100%", "100%", "-100%"],
-            opacity: [0, 1, 0]
-          }}
-          transition={{
-            duration: 26,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div 
-          className="absolute top-0 right-1/4 w-[1px] h-full bg-gradient-to-b from-transparent via-[#2a3546] to-transparent shadow-[0_0_8px_0px_#2a3546]" 
-          animate={{
-            y: ["100%", "-100%", "100%"],
-            opacity: [0, 1, 0]
-          }}
-          transition={{
-            duration: 30,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2
-          }}
-        />
-
-        {/* Colorful Accent Lines */}
-        <motion.div 
-          className="absolute top-1/4 left-0 w-1/3 h-[1px] bg-gradient-to-r from-transparent via-[#a0b1c5] to-transparent shadow-[0_0_8px_0px_#a0b1c5]" 
-          animate={{
-            x: [-100, 100, -100],
-            opacity: [0, 1, 0]
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-1/4 right-0 w-1/3 h-[1px] bg-gradient-to-r from-transparent via-[#a0b1c5] to-transparent shadow-[0_0_8px_0px_#a0b1c5]" 
-          animate={{
-            x: [100, -100, 100],
-            opacity: [0, 1, 0]
-          }}
-          transition={{
-            duration: 22,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 4.5
-          }}
-        />
-        <motion.div 
-          className="absolute top-2/3 left-1/4 w-1/4 h-[1px] bg-gradient-to-r from-transparent via-[#a0b1c5] to-transparent shadow-[0_0_8px_0px_#a0b1c5]" 
-          animate={{
-            x: [-80, 80, -80],
-            opacity: [0, 1, 0]
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-2/3 right-1/4 w-1/4 h-[1px] bg-gradient-to-r from-transparent via-[#a0b1c5] to-transparent shadow-[0_0_8px_0px_#a0b1c5]" 
-          animate={{
-            x: [80, -80, 80],
-            opacity: [0, 1, 0]
-          }}
-          transition={{
-            duration: 24,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 3
-          }}
-        />
-        
-        {/* Falling star trails - increased quantity */}
-        {[...Array(18)].map((_, i) => (
-          <SilverTrail key={i} index={i} />
-        ))}
-      </div>
-
+      {/* Background Elements - Removed */}
       <div className="container mx-auto px-10 md:px-6 relative flex flex-col h-full">
         <motion.div ref={titleRef} className="text-center mb-0 md:mb-4" style={{ y, opacity }}>
           <div className="inline-block px-4 py-1 mb-2 bg-[#1c2534] rounded-full relative overflow-hidden">
@@ -375,7 +207,11 @@ export default function PortfolioShowcase() {
                 index === activePanel ? "scale-100 opacity-100" : "scale-95 opacity-70"
               }`}
             >
-              <div className="bg-[#1c2534] rounded-lg overflow-hidden shadow-lg">
+              <CardSpotlight
+                className="bg-[#111622]/80 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-[#2a3546]"
+                radius={450}
+                color="#2a3546"
+              >
                 <div className="aspect-[16/12] sm:aspect-[16/10] md:aspect-[16/7] relative bg-[#0f1520]">
                   <LaptopAnimation 
                     desktopImage={item.image}
@@ -389,7 +225,7 @@ export default function PortfolioShowcase() {
                     View Project
                   </button>
                 </div>
-              </div>
+              </CardSpotlight>
             </div>
           ))}
         </div>
