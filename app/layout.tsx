@@ -11,7 +11,8 @@ const playfair = Playfair_Display({
 export const metadata = {
   title: "FramerStudio - Beautiful Websites, Built Faster",
   description: "Premium web development services using Framer",
-    generator: 'v0.dev'
+  generator: 'v0.dev',
+  viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
 }
 
 export default function RootLayout({

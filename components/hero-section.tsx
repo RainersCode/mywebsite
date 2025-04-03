@@ -364,7 +364,7 @@ export default function HeroSection() {
   }, [])
 
   return (
-    <section ref={ref} className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section ref={ref} className="relative h-screen flex items-center justify-center overflow-hidden overscroll-none">
       {/* Enhanced dark starry background */}
       <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 to-black z-0" />
       
@@ -405,7 +405,7 @@ export default function HeroSection() {
               direction: "none",
               enable: true,
               outModes: {
-                default: "bounce",
+                default: "out",
               },
               random: true,
               speed: 1,
