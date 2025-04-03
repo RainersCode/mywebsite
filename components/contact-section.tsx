@@ -1,24 +1,14 @@
 "use client"
 
-import type React from "react"
-
-import { useRef, useState } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
-import { Button } from "@/components/ui/button"
+import React, { useState } from "react"
+import { Container } from "@/components/ui/container"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Mail, Phone, Linkedin } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Mail, Phone, Linkedin, Clock } from "lucide-react"
+import { CardSpotlight } from "@/components/ui/card-spotlight"
 
-export default function ContactSection() {
-  const ref = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  })
-
-  const y = useTransform(scrollYProgress, [0, 1], ["50px", "-50px"])
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
-
+export function ContactSection() {
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -26,153 +16,196 @@ export default function ContactSection() {
     message: "",
   })
 
+  const [sending, setSending] = useState(false)
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormState({
-      ...formState,
-      [e.target.name]: e.target.value,
-    })
+    const { name, value } = e.target
+    setFormState((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Form submission logic would go here
-    console.log(formState)
-    alert("Thank you for your message! We'll get back to you soon.")
+    setSending(true)
+    
+    // Simulate form submission
+    await new Promise((resolve) => setTimeout(resolve, 1500))
+    
+    // Clear form
     setFormState({
       name: "",
       email: "",
       subject: "",
       message: "",
     })
+    
+    setSending(false)
+    
+    // Here you would normally handle the form submission to your backend
+    console.log("Form submitted:", formState)
   }
 
   return (
-    <section id="contact" ref={ref} className="py-24 md:py-32 bg-[#141b27] relative overflow-hidden">
-      {/* Background Elements - Removed */}
-      <div className="container mx-auto px-6">
-        <motion.div className="max-w-4xl mx-auto" style={{ y, opacity }}>
-          <div className="text-center mb-16">
-            <div className="inline-block px-4 py-1 mb-4 bg-[#1c2534] border border-[#2a3546] rounded-full relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#a0b1c5]/10 via-[#8faabe]/10 to-[#5d7b9c]/10" />
-              <span className="relative text-[#c6d4e3] text-sm uppercase tracking-widest">Get In Touch</span>
-            </div>
-            <h2 className="font-serif text-3xl md:text-4xl mb-6">Contact Us</h2>
-            <p className="text-[#a0b1c5] text-lg max-w-2xl mx-auto">
-              Ready to discuss your project? Get in touch with us today.
-            </p>
-          </div>
+    <section id="contact" className="py-20 relative overflow-hidden">
+      <Container className="relative z-10">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            Get in Touch
+          </h2>
+          <p className="text-[#c6d4e3] max-w-2xl mx-auto">
+            Have a question or want to work together? Drop us a message and we'll get back to you as soon as possible.
+          </p>
+        </div>
 
-          <div className="grid md:grid-cols-3 gap-10">
-            <div className="md:col-span-2">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="relative group">
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-[#a0b1c5]/50 to-[#5d7b9c]/50 rounded opacity-0 group-focus-within:opacity-100 transition duration-300"></div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Contact Form - Takes up 2/3 of the space on large screens */}
+          <div className="lg:col-span-2">
+            <CardSpotlight 
+              className="p-6 bg-[#111622]/80 backdrop-blur-sm border-[#2a3546]"
+              radius={300}
+            >
+              <h3 className="text-xl font-semibold text-white mb-6">Send Us a Message</h3>
+              <form onSubmit={handleSubmit}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div className="space-y-2">
+                    <label htmlFor="name" className="text-[#c6d4e3] text-sm">
+                      Name
+                    </label>
                     <Input
                       type="text"
                       name="name"
                       placeholder="Your Name"
                       value={formState.name}
                       onChange={handleChange}
-                      className="relative bg-[#1c2534]/50 border-[#2a3546] focus:border-[#3d4f69]"
+                      className="relative bg-[#111622]/80 backdrop-blur-sm border-[#2a3546] focus:border-[#3d4f69]"
                       required
                     />
                   </div>
-                  <div className="relative group">
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-[#97a8bc]/50 to-[#5f7d9e]/50 rounded opacity-0 group-focus-within:opacity-100 transition duration-300"></div>
+                  <div className="space-y-2">
+                    <label htmlFor="email" className="text-[#c6d4e3] text-sm">
+                      Email
+                    </label>
                     <Input
                       type="email"
                       name="email"
                       placeholder="Your Email"
                       value={formState.email}
                       onChange={handleChange}
-                      className="relative bg-[#1c2534]/50 border-[#2a3546] focus:border-[#3d4f69]"
+                      className="relative bg-[#111622]/80 backdrop-blur-sm border-[#2a3546] focus:border-[#3d4f69]"
                       required
                     />
                   </div>
                 </div>
-                <div className="relative group">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-[#8fa0b4]/50 to-[#617f9f]/50 rounded opacity-0 group-focus-within:opacity-100 transition duration-300"></div>
+                <div className="space-y-2 mb-4">
+                  <label htmlFor="subject" className="text-[#c6d4e3] text-sm">
+                    Subject
+                  </label>
                   <Input
                     type="text"
                     name="subject"
                     placeholder="Subject"
                     value={formState.subject}
                     onChange={handleChange}
-                    className="relative bg-[#1c2534]/50 border-[#2a3546] focus:border-[#3d4f69]"
+                    className="relative bg-[#111622]/80 backdrop-blur-sm border-[#2a3546] focus:border-[#3d4f69]"
                     required
                   />
                 </div>
-                <div className="relative group">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-[#a0b1c5]/50 to-[#5d7b9c]/50 rounded opacity-0 group-focus-within:opacity-100 transition duration-300"></div>
+                <div className="space-y-2 mb-6">
+                  <label htmlFor="message" className="text-[#c6d4e3] text-sm">
+                    Message
+                  </label>
                   <Textarea
                     name="message"
                     placeholder="Your Message"
                     value={formState.message}
                     onChange={handleChange}
-                    className="relative bg-[#1c2534]/50 border-[#2a3546] focus:border-[#3d4f69] min-h-[150px]"
+                    className="relative bg-[#111622]/80 backdrop-blur-sm border-[#2a3546] focus:border-[#3d4f69] min-h-[150px]"
                     required
                   />
                 </div>
-                <div className="relative inline-block group">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] rounded opacity-70 group-hover:opacity-100 blur transition duration-300"></div>
-                  <Button
-                    type="submit"
-                    className="relative px-8 py-6 h-auto bg-[#141b27] text-[#c6d4e3] hover:bg-[#1c2534]"
-                  >
-                    SEND MESSAGE
-                  </Button>
-                </div>
+                <Button
+                  type="submit"
+                  size="lg"
+                  disabled={sending}
+                  className="w-full bg-gradient-to-br from-[#111622]/90 to-[#1c2534]/90 backdrop-blur-sm border border-[#2a3546] hover:bg-gradient-to-br hover:from-[#111622] hover:to-[#1c2534] text-white"
+                >
+                  {sending ? "SENDING..." : "SEND MESSAGE"}
+                </Button>
               </form>
-            </div>
+            </CardSpotlight>
+          </div>
 
-            <div className="space-y-6">
-              <div className="bg-[#1c2534]/50 p-6 border border-[#2a3546] relative overflow-hidden">
-                <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] opacity-70"></div>
-                <h3 className="text-lg font-medium mb-3">Contact Information</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center">
-                    <Mail className="h-5 w-5 text-[#7d8ea1] mr-3" />
-                    <a
-                      href="mailto:contact@framerstudio.com"
-                      className="text-[#c6d4e3] hover:text-white transition-colors"
-                    >
-                      contact@framerstudio.com
-                    </a>
+          {/* Contact Information & Office Hours - Takes up 1/3 of the space on large screens */}
+          <div className="space-y-6">
+            <CardSpotlight 
+              className="p-6 bg-[#111622]/80 backdrop-blur-sm border-[#2a3546]"
+              radius={300}
+            >
+              <h3 className="text-xl font-semibold text-white mb-6">Contact Information</h3>
+              <div className="space-y-4">
+                <div className="flex items-center">
+                  <Mail className="h-5 w-5 text-[#7d8ea1] mr-3" />
+                  <a href="mailto:info@webdeco.com" className="text-[#c6d4e3] hover:text-white transition-colors">
+                    info@webdeco.com
+                  </a>
+                </div>
+                <div className="flex items-center">
+                  <Phone className="h-5 w-5 text-[#7d8ea1] mr-3" />
+                  <a href="tel:+1234567890" className="text-[#c6d4e3] hover:text-white transition-colors">
+                    +1 (234) 567-890
+                  </a>
+                </div>
+                <div className="flex items-center">
+                  <Linkedin className="h-5 w-5 text-[#7d8ea1] mr-3" />
+                  <a 
+                    href="https://linkedin.com/company/webdeco" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-[#c6d4e3] hover:text-white transition-colors"
+                  >
+                    linkedin.com/company/webdeco
+                  </a>
+                </div>
+              </div>
+            </CardSpotlight>
+
+            <CardSpotlight 
+              className="p-6 bg-[#111622]/80 backdrop-blur-sm border-[#2a3546]"
+              radius={300}
+            >
+              <h3 className="text-xl font-semibold text-white mb-6">Office Hours</h3>
+              <div className="space-y-3">
+                <div className="flex items-center">
+                  <Clock className="h-5 w-5 text-[#7d8ea1] mr-3" />
+                  <div>
+                    <p className="text-[#c6d4e3]">Monday - Friday:</p>
+                    <p className="text-white">9:00 AM - 6:00 PM</p>
                   </div>
-                  <div className="flex items-center">
-                    <Phone className="h-5 w-5 text-[#7d8ea1] mr-3" />
-                    <a href="tel:+1234567890" className="text-[#c6d4e3] hover:text-white transition-colors">
-                      +1 (234) 567-890
-                    </a>
+                </div>
+                <div className="flex items-start">
+                  <Clock className="h-5 w-5 text-[#7d8ea1] mr-3 mt-1" />
+                  <div>
+                    <p className="text-[#c6d4e3]">Saturday:</p>
+                    <p className="text-white">10:00 AM - 4:00 PM</p>
                   </div>
-                  <div className="flex items-center">
-                    <Linkedin className="h-5 w-5 text-[#7d8ea1] mr-3" />
-                    <a
-                      href="https://linkedin.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[#c6d4e3] hover:text-white transition-colors"
-                    >
-                      LinkedIn Profile
-                    </a>
+                </div>
+                <div className="flex items-start">
+                  <Clock className="h-5 w-5 text-[#7d8ea1] mr-3 mt-1" />
+                  <div>
+                    <p className="text-[#c6d4e3]">Sunday:</p>
+                    <p className="text-white">Closed</p>
                   </div>
                 </div>
               </div>
-
-              <div className="bg-[#1c2534]/50 p-6 border border-[#2a3546] relative overflow-hidden">
-                <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] opacity-70"></div>
-                <h3 className="text-lg font-medium mb-3">Office Hours</h3>
-                <p className="text-[#a0b1c5]">
-                  Monday - Friday: 9am - 6pm
-                  <br />
-                  Saturday - Sunday: Closed
-                </p>
-              </div>
-            </div>
+            </CardSpotlight>
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </Container>
+
+      {/* Dark background with gradient effect */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#050813] via-[#0a0e1c] to-[#050813] z-0"></div>
     </section>
   )
 }
