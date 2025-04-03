@@ -1,10 +1,13 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useCallback } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
+import Particles from "react-tsparticles"
+import { loadSlim } from "tsparticles-slim"
+import type { Engine } from "tsparticles-engine"
 
 // Updated showcase items with enhanced visual appearance
 const showcaseItems = [
@@ -344,161 +347,6 @@ const DiagonalCarouselItem = ({ item, index }: {
   )
 }
 
-// Star component for background
-const Star = ({ index }: { index: number }) => {
-  // Create varied star sizes, with most being small
-  const size = Math.random() < 0.8 
-    ? Math.random() * 2 + 1 // 80% small stars (1-3px)
-    : Math.random() * 4 + 3;    // 20% larger stars (3-7px)
-  
-  // Create varied brightness levels - increased overall
-  const brightness = Math.random() < 0.7
-    ? Math.random() * 0.4 + 0.3 // 70% dimmer stars (0.3-0.7 opacity)
-    : Math.random() * 0.5 + 0.7; // 30% brighter stars (0.7-1.0 opacity)
-  
-  // Random positions throughout the sky
-  const left = `${Math.random() * 100}%`;
-  const top = `${Math.random() * 100}%`;
-  
-  // Some stars have blue-purple tint, others are white/silver
-  const hasColor = Math.random() < 0.3;
-  const colorClass = hasColor 
-    ? "bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c]" 
-    : "bg-[#c6d4e3]";
-  
-  // Calculate diagonal movement
-  // Create varied paths - some more horizontal, some more vertical
-  const angleVariation = Math.random() * 30 - 15; // -15 to +15 degrees variation
-  const baseAngle = 45 + angleVariation; // Around 45 degrees (diagonal)
-  
-  // Random animation duration (between 15-45 seconds for moderately slow movement)
-  const duration = 15 + Math.random() * 30;
-  
-  // Random delay so stars don't all move at once
-  const delay = Math.random() * 10;
-  
-  // Calculate travel distance (percentage of screen)
-  const travelDistance = 100 + Math.random() * 50; // 100-150% of screen size
-  
-  // Calculate start and end positions for diagonal movement
-  // For a true diagonal, we'll move both x and y by the same percentage
-  const moveX = travelDistance * Math.cos(baseAngle * Math.PI / 180);
-  const moveY = travelDistance * Math.sin(baseAngle * Math.PI / 180);
-  
-  return (
-    <motion.div
-      key={index}
-      className={`absolute rounded-full ${colorClass} z-10`}
-      style={{
-        width: size,
-        height: size,
-        left,
-        top,
-        boxShadow: hasColor 
-          ? `0 0 ${size * 3}px 1px rgba(160, 177, 197, ${brightness * 0.7})` 
-          : `0 0 ${size * 3}px 1px rgba(198, 212, 227, ${brightness * 0.7})`,
-      }}
-      animate={{
-        x: [`0%`, `${moveX}%`],
-        y: [`0%`, `${moveY}%`],
-        opacity: [0, brightness, brightness, 0]
-      }}
-      transition={{
-        duration: duration,
-        repeat: Infinity,
-        delay: delay,
-        ease: "linear",
-        opacity: {
-          times: [0, 0.1, 0.9, 1],
-        }
-      }}
-    />
-  );
-};
-
-// Silver trail component - like a small comet or shooting star
-const SilverTrail = ({ index }: { index: number }) => {
-  // Random size for the trail head - increased sizes
-  const headSize = Math.random() * 3 + 2; // 2-5px head (increased from 1-3px)
-  const tailLength = headSize * (Math.random() * 18 + 15); // proportional tail length (increased from 10-25)
-  
-  // Random angle for diagonal movement
-  const angleVariation = Math.random() * 40 - 20; // -20 to +20 degrees variation
-  const baseAngle = 45 + angleVariation; // Around 45 degrees (diagonal)
-  
-  // Random duration between 10-30 seconds (faster than before)
-  const duration = 10 + Math.random() * 20;
-  
-  // Random start positions
-  // Start either from top or left side for diagonal movement
-  const startFromTop = Math.random() > 0.5;
-  const startX = startFromTop ? Math.random() * 100 : -tailLength;
-  const startY = startFromTop ? -tailLength : Math.random() * 100;
-  
-  // Calculate end position based on angle and travel distance
-  const travelDistance = 120 + Math.random() * 30; // 120-150% of screen size
-  const endX = startX + travelDistance * Math.cos(baseAngle * Math.PI / 180);
-  const endY = startY + travelDistance * Math.sin(baseAngle * Math.PI / 180);
-  
-  // Delay so trails don't all appear at once
-  const delay = Math.random() * 15;
-  
-  // Silver color with varying opacity - increased overall
-  const opacity = Math.random() * 0.4 + 0.5; // 0.5-0.9 opacity (increased from 0.2-0.6)
-  
-  // Rotation to match movement angle
-  const rotation = (baseAngle - 45) + 90; // Transform from math angle to CSS rotation
-  
-  return (
-    <motion.div
-      className="absolute z-20 pointer-events-none"
-      style={{
-        left: `${startX}%`,
-        top: `${startY}%`,
-        rotate: `${rotation}deg`,
-        opacity: 0
-      }}
-      animate={{
-        left: `${endX}%`,
-        top: `${endY}%`,
-        opacity: [0, opacity, opacity, 0]
-      }}
-      transition={{
-        duration: duration,
-        repeat: Infinity,
-        delay: delay,
-        ease: "linear",
-        opacity: {
-          times: [0, 0.05, 0.95, 1]
-        }
-      }}
-    >
-      {/* The trail head (circle) */}
-      <div 
-        className="absolute rounded-full bg-[#e0e9f5]" // Brighter color
-        style={{
-          width: headSize,
-          height: headSize,
-          boxShadow: `0 0 ${headSize * 3}px 2px rgba(224, 233, 245, 0.9)`
-        }}
-      />
-      
-      {/* The trail tail (gradient line) */}
-      <div 
-        className="absolute bg-gradient-to-t from-transparent to-[#c6d4e3]" // Brighter gradient
-        style={{
-          width: headSize / 1.2, // Wider than before
-          height: tailLength,
-          transformOrigin: 'center top',
-          top: headSize / 2,
-          left: headSize / 3,
-          filter: 'blur(0.5px)'
-        }}
-      />
-    </motion.div>
-  );
-};
-
 export default function HeroSection() {
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
@@ -510,23 +358,79 @@ export default function HeroSection() {
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"])
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
 
+  // Particles initialization
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadSlim(engine)
+  }, [])
+
   return (
     <section ref={ref} className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Enhanced dark starry background */}
       <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 to-black z-0" />
       
-      {/* Star field with diagonal movement */}
-      <div className="absolute inset-0 z-5 overflow-hidden pointer-events-none">
-        {/* Generate 100 stars for a rich starfield */}
-        {[...Array(100)].map((_, i) => (
-          <Star key={i} index={i} />
-        ))}
-        
-        {/* Generate 18 silver trails (like small shooting stars) - increased from 12 */}
-        {[...Array(18)].map((_, i) => (
-          <SilverTrail key={i} index={i} />
-        ))}
-      </div>
+      {/* Particles */}
+      <Particles
+        id="tsparticles"
+        className="absolute inset-0 z-10"
+        init={particlesInit}
+        options={{
+          fpsLimit: 120,
+          interactivity: {
+            events: {
+              onHover: {
+                enable: true,
+                mode: "repulse",
+              },
+              resize: true,
+            },
+            modes: {
+              repulse: {
+                distance: 100,
+                duration: 0.4,
+              },
+            },
+          },
+          particles: {
+            color: {
+              value: "#a0b1c5",
+            },
+            links: {
+              color: "#5d7b9c",
+              distance: 150,
+              enable: true,
+              opacity: 0.5,
+              width: 1,
+            },
+            move: {
+              direction: "none",
+              enable: true,
+              outModes: {
+                default: "bounce",
+              },
+              random: true,
+              speed: 1,
+              straight: false,
+            },
+            number: {
+              density: {
+                enable: true,
+                area: 800,
+              },
+              value: 80,
+            },
+            opacity: {
+              value: 0.5,
+            },
+            shape: {
+              type: "circle",
+            },
+            size: {
+              value: { min: 1, max: 3 },
+            },
+          },
+          detectRetina: true,
+        }}
+      />
       
       {/* Subtle cosmic dust/nebula effect */}
       <div className="absolute inset-0 opacity-30 z-5">
