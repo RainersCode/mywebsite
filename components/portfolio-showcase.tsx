@@ -6,6 +6,7 @@ import LaptopAnimation from "./laptop-animation"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { CardSpotlight } from "@/components/ui/card-spotlight"
+import { Button } from "@/components/ui/button"
 
 // Register the ScrollTrigger plugin
 if (typeof window !== "undefined") {
@@ -221,9 +222,13 @@ export default function PortfolioShowcase() {
                 <div className="p-2 md:p-4">
                   <h3 className="text-base md:text-xl font-semibold text-white mb-0.5 md:mb-1">{item.title}</h3>
                   <p className="text-[#a0b1c5] text-xs md:text-base max-w-lg">{item.description}</p>
-                  <button className="mt-1 md:mt-2 px-3 py-1 md:px-4 md:py-1.5 bg-[#2a3546] hover:bg-[#3a4556] text-white rounded-md transition-colors text-xs md:text-sm">
+                  <Button
+                    variant="nav"
+                    size="sm"
+                    className="mt-1 md:mt-2"
+                  >
                     View Project
-                  </button>
+                  </Button>
                 </div>
               </CardSpotlight>
             </div>

@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import Particles from "react-tsparticles"
 import { loadSlim } from "tsparticles-slim"
 import type { Engine } from "tsparticles-engine"
+import { Button } from "@/components/ui/button"
 
 // Updated showcase items with enhanced visual appearance
 const showcaseItems = [
@@ -467,21 +468,25 @@ export default function HeroSection() {
             Leveraging Framer to create stunning, high-performance websites for ambitious brands.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="#portfolio"
-              className="px-8 py-3 bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] text-white text-sm tracking-wide hover:from-[#8fa1b5] hover:to-[#4d6b8c] transition-colors"
+            <Button
+              asChild
+              variant="nav"
+              size="lg"
             >
-              VIEW SHOWCASE
-            </Link>
-            <div className="relative group">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] rounded opacity-50 group-hover:opacity-100 transition-opacity"></div>
-              <Link
-                href="#contact"
-                className="relative px-8 py-3 bg-[#141b27] border border-transparent text-[#c6d4e3] text-sm tracking-wide block"
-              >
+              <Link href="#portfolio">
+                VIEW SHOWCASE
+              </Link>
+            </Button>
+            <Button
+              asChild
+              variant="nav"
+              size="lg"
+              className="bg-gradient-to-r from-[#141b27] to-[#1c2534] border-[#4d5f79] hover:border-[#a0b1c5] hover:bg-gradient-to-r hover:from-[#15202f] hover:to-[#1f2a3c]"
+            >
+              <Link href="#contact">
                 START YOUR PROJECT
               </Link>
-            </div>
+            </Button>
           </div>
         </motion.div>
       </div>

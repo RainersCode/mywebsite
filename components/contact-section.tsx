@@ -129,7 +129,8 @@ export function ContactSection() {
                   type="submit"
                   size="lg"
                   disabled={sending}
-                  className="w-full bg-gradient-to-br from-[#111622]/90 to-[#1c2534]/90 backdrop-blur-sm border border-[#2a3546] hover:bg-gradient-to-br hover:from-[#111622] hover:to-[#1c2534] text-white"
+                  variant="nav"
+                  className="w-full"
                 >
                   {sending ? "SENDING..." : "SEND MESSAGE"}
                 </Button>

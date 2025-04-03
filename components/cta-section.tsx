@@ -4,6 +4,7 @@ import { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import Link from "next/link"
 import { CardSpotlight } from "@/components/ui/card-spotlight"
+import { Button } from "@/components/ui/button"
 
 export default function CtaSection() {
   const ref = useRef<HTMLDivElement>(null)
@@ -35,15 +36,15 @@ export default function CtaSection() {
               Let's create a website that elevates your brand and delivers exceptional user experiences.
             </p>
 
-            <div className="relative inline-block group">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] rounded opacity-70 group-hover:opacity-100 blur transition duration-300"></div>
-              <Link
-                href="#contact"
-                className="relative inline-block px-8 py-4 bg-[#141b27] text-[#c6d4e3] text-sm tracking-wide transition-colors"
-              >
+            <Button
+              asChild
+              variant="nav"
+              size="lg"
+            >
+              <Link href="#contact">
                 GET A FREE QUOTE
               </Link>
-            </div>
+            </Button>
           </CardSpotlight>
         </motion.div>
       </div>
