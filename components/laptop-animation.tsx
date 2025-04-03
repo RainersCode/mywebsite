@@ -30,19 +30,16 @@ export default function LaptopAnimation({
 
   useEffect(() => {
     if (isInView) {
-      // Delay the laptop opening animation
+      // Start loading images immediately
+      setIsContentVisible(true)
+      
+      // Delay the laptop opening animation slightly
       const openTimer = setTimeout(() => {
         setIsLaptopOpen(true)
-      }, 500)
-
-      // Delay the content appearing after laptop is open
-      const contentTimer = setTimeout(() => {
-        setIsContentVisible(true)
-      }, 1500)
+      }, 300)
 
       return () => {
         clearTimeout(openTimer)
-        clearTimeout(contentTimer)
       }
     } else {
       setIsLaptopOpen(false)
@@ -52,7 +49,7 @@ export default function LaptopAnimation({
 
   return (
     <motion.div ref={containerRef} className="relative w-full max-w-5xl mx-auto" style={{ scale, opacity }}>
-      <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-16">
         {/* Laptop Screen Only */}
         <div className="relative w-full max-w-2xl aspect-[16/10]">
           {/* Screen Container */}
@@ -79,44 +76,41 @@ export default function LaptopAnimation({
                 <div className="absolute inset-[30%] rounded-full bg-[#2a3546]/50"></div>
               </div>
 
-              {/* Screen Content */}
+              {/* Screen Content - No need to wait for isContentVisible */}
               <AnimatePresence>
-                {isContentVisible && (
-                  <motion.div
-                    className="absolute inset-0"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {/* Website Scrolling Animation */}
-                    <div className="absolute inset-0 overflow-hidden">
-                      <motion.div
-                        className="w-full"
-                        style={{ height: "auto", position: "relative" }}
-                        animate={{
-                          y: ["0%", "-75%", "0%"],
-                        }}
-                        transition={{
-                          duration: 40,
-                          ease: "linear",
-                          repeat: Number.POSITIVE_INFINITY,
-                          repeatType: "loop",
-                        }}
-                      >
-                        <Image
-                          src={desktopImage}
-                          alt="Desktop Website Showcase"
-                          width={1200}
-                          height={4000}
-                          className="w-full h-auto"
-                          unoptimized={true}
-                          priority
-                        />
-                      </motion.div>
-                    </div>
-                  </motion.div>
-                )}
+                <motion.div
+                  className="absolute inset-0"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isContentVisible ? 1 : 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {/* Website Scrolling Animation */}
+                  <div className="absolute inset-0 overflow-hidden">
+                    <motion.div
+                      className="w-full"
+                      style={{ height: "auto", position: "relative" }}
+                      animate={{
+                        y: ["0%", "-75%", "0%"],
+                      }}
+                      transition={{
+                        duration: 40,
+                        ease: "linear",
+                        repeat: Number.POSITIVE_INFINITY,
+                        repeatType: "loop",
+                      }}
+                    >
+                      <Image
+                        src={desktopImage}
+                        alt="Desktop Website Showcase"
+                        width={1200}
+                        height={4000}
+                        className="w-full h-auto"
+                        unoptimized={true}
+                        priority
+                      />
+                    </motion.div>
+                  </div>
+                </motion.div>
               </AnimatePresence>
             </div>
 
@@ -128,9 +122,9 @@ export default function LaptopAnimation({
           </motion.div>
         </div>
 
-        {/* Phone */}
+        {/* Phone - Hide on small screens, show on md and up */}
         <motion.div
-          className="relative w-full max-w-[200px] aspect-[9/19]"
+          className="hidden md:block relative w-full max-w-[200px] aspect-[9/19]"
           style={{
             x: phoneX,
             opacity: phoneOpacity,
@@ -141,44 +135,41 @@ export default function LaptopAnimation({
             {/* Phone Notch */}
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/4 h-[5%] bg-[#0f1520] rounded-b-xl z-10" />
 
-            {/* Phone Screen */}
+            {/* Phone Screen - No need to wait for isContentVisible */}
             <AnimatePresence>
-              {isContentVisible && (
-                <motion.div
-                  className="absolute inset-0"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                >
-                  {/* Mobile Website Scrolling Animation */}
-                  <div className="absolute inset-0 overflow-hidden">
-                    <motion.div
-                      className="w-full"
-                      style={{ height: "auto", position: "relative" }}
-                      animate={{
-                        y: ["0%", "-75%", "0%"],
-                      }}
-                      transition={{
-                        duration: 35,
-                        ease: "linear",
-                        repeat: Number.POSITIVE_INFINITY,
-                        repeatType: "loop",
-                      }}
-                    >
-                      <Image
-                        src={mobileImage}
-                        alt="Mobile Website Showcase"
-                        width={750}
-                        height={3500}
-                        className="w-full h-auto"
-                        unoptimized={true}
-                        priority
-                      />
-                    </motion.div>
-                  </div>
-                </motion.div>
-              )}
+              <motion.div
+                className="absolute inset-0"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: isContentVisible ? 1 : 0 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+              >
+                {/* Mobile Website Scrolling Animation */}
+                <div className="absolute inset-0 overflow-hidden">
+                  <motion.div
+                    className="w-full"
+                    style={{ height: "auto", position: "relative" }}
+                    animate={{
+                      y: ["0%", "-75%", "0%"],
+                    }}
+                    transition={{
+                      duration: 35,
+                      ease: "linear",
+                      repeat: Number.POSITIVE_INFINITY,
+                      repeatType: "loop",
+                    }}
+                  >
+                    <Image
+                      src={mobileImage}
+                      alt="Mobile Website Showcase"
+                      width={750}
+                      height={3500}
+                      className="w-full h-auto"
+                      unoptimized={true}
+                      priority
+                    />
+                  </motion.div>
+                </div>
+              </motion.div>
             </AnimatePresence>
 
             {/* Screen Reflection */}

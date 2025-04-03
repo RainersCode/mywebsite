@@ -181,9 +181,9 @@ export default function PortfolioShowcase() {
       // Calculate the appropriate section height based on viewport
       const viewportHeight = window.innerHeight;
       const sectionHeight = Math.max(
-        viewportHeight * 0.8, // Minimum height to maintain proportions
+        viewportHeight * 0.7, // Minimum height to maintain proportions
         window.innerWidth < 768 
-          ? viewportHeight * 0.9 * panelCount // Mobile sizing
+          ? viewportHeight * 0.7 * panelCount // Mobile sizing (reduced)
           : viewportHeight * 0.8 * panelCount // Desktop sizing
       );
   
@@ -338,54 +338,54 @@ export default function PortfolioShowcase() {
       </div>
 
       <div className="container mx-auto px-10 md:px-6 relative flex flex-col h-full">
-        <motion.div ref={titleRef} className="text-center mb-2 md:mb-4" style={{ y, opacity }}>
+        <motion.div ref={titleRef} className="text-center mb-0 md:mb-4" style={{ y, opacity }}>
           <div className="inline-block px-4 py-1 mb-2 bg-[#1c2534] rounded-full relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-[#a0b1c5]/10 via-[#8faabe]/10 to-[#5d7b9c]/10" />
             <span className="relative text-[#c6d4e3] text-sm uppercase tracking-widest">Responsive Design</span>
           </div>
-          <h2 className="font-serif text-3xl md:text-4xl mb-2">Our Work in Motion</h2>
-          <p className="text-[#a0b1c5] text-lg max-w-2xl mx-auto">
+          <h2 className="font-serif text-2xl md:text-4xl mb-1 md:mb-2">Our Work in Motion</h2>
+          <p className="text-[#a0b1c5] text-sm md:text-lg max-w-2xl mx-auto">
             Experience the fluidity and elegance of our Framer-built websites across all devices.
           </p>
           
           {/* Scroll progress indicator */}
-          <div className="flex gap-2 mt-3 justify-center">
+          <div className="flex gap-2 mt-2 md:mt-3 justify-center">
             {portfolioItems.map((_, index) => (
               <div 
                 key={index} 
                 className={`h-1 rounded-full transition-all duration-300 ${
                   index === activePanel 
-                    ? "bg-[#8faabe] w-12" 
-                    : "bg-[#2a3546] w-6"
+                    ? "bg-[#8faabe] w-8 md:w-12" 
+                    : "bg-[#2a3546] w-4 md:w-6"
                 }`}
               />
             ))}
           </div>
         </motion.div>
         
-        {/* Horizontal Scrolling Portfolio Section - positioned higher */}
+        {/* Horizontal Scrolling Portfolio Section */}
         <div 
           ref={trackRef} 
-          className="flex flex-nowrap gap-8 items-start justify-start min-h-[45vh] -mt-2 mb-4 mx-auto"
+          className="flex flex-nowrap gap-4 md:gap-8 items-start justify-start min-h-[35vh] md:min-h-[45vh] -mt-0 mb-2 mx-auto"
         >
           {portfolioItems.map((item, index) => (
             <div 
               key={item.id}
-              className={`shrink-0 w-[90vw] sm:w-[85vw] md:w-[70vw] lg:w-[55vw] transition-all duration-500 ${
+              className={`shrink-0 w-[85vw] sm:w-[80vw] md:w-[70vw] lg:w-[55vw] transition-all duration-500 ${
                 index === activePanel ? "scale-100 opacity-100" : "scale-95 opacity-70"
               }`}
             >
               <div className="bg-[#1c2534] rounded-lg overflow-hidden shadow-lg">
-                <div className="aspect-[16/9] sm:aspect-[16/8] md:aspect-[16/7] relative bg-[#0f1520]">
+                <div className="aspect-[16/12] sm:aspect-[16/10] md:aspect-[16/7] relative bg-[#0f1520]">
                   <LaptopAnimation 
                     desktopImage={item.image}
                     mobileImage={item.mobileImage}
                   />
                 </div>
-                <div className="p-4">
-                  <h3 className="text-lg md:text-xl font-semibold text-white mb-1">{item.title}</h3>
-                  <p className="text-[#a0b1c5] text-sm md:text-base max-w-lg">{item.description}</p>
-                  <button className="mt-2 px-4 py-1.5 bg-[#2a3546] hover:bg-[#3a4556] text-white rounded-md transition-colors text-sm">
+                <div className="p-2 md:p-4">
+                  <h3 className="text-base md:text-xl font-semibold text-white mb-0.5 md:mb-1">{item.title}</h3>
+                  <p className="text-[#a0b1c5] text-xs md:text-base max-w-lg">{item.description}</p>
+                  <button className="mt-1 md:mt-2 px-3 py-1 md:px-4 md:py-1.5 bg-[#2a3546] hover:bg-[#3a4556] text-white rounded-md transition-colors text-xs md:text-sm">
                     View Project
                   </button>
                 </div>
@@ -396,7 +396,7 @@ export default function PortfolioShowcase() {
       </div>
       
       {/* Scroll hint for mobile */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-[#5d7b9c] text-sm md:hidden animate-bounce">
+      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-[#5d7b9c] text-xs md:text-sm md:hidden animate-bounce">
         Scroll to explore more
       </div>
     </section>

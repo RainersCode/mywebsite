@@ -10,7 +10,7 @@ import Footer from "@/components/footer"
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-zinc-950 to-zinc-900 text-zinc-100">
+    <div className="min-h-screen bg-[#141b27] text-zinc-100">
       <Navbar />
       <main>
         <HeroSection />
