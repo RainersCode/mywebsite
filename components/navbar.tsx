@@ -207,9 +207,9 @@ export default function Navbar() {
             <div className="absolute top-1/4 -left-20 w-40 h-40 rounded-full bg-[#a0b1c5]/5 blur-3xl"></div>
             <div className="absolute bottom-1/4 -right-20 w-40 h-40 rounded-full bg-[#5d7b9c]/5 blur-3xl"></div>
             
-            <div className="container mx-auto h-full px-6 py-20 flex flex-col justify-center">
+            <div className="container mx-auto h-full px-6 pt-16 pb-10 flex flex-col justify-start">
               <motion.div 
-                className="text-2xl font-serif mb-10 text-center relative z-10"
+                className="text-2xl font-serif mb-8 text-center relative z-10"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
@@ -217,7 +217,7 @@ export default function Navbar() {
                 FRAMER<span className="text-[#a0b1c5]">STUDIO</span>
               </motion.div>
               
-              <nav className="w-full max-w-md mx-auto flex flex-col gap-6 relative z-10">
+              <nav className="w-full max-w-md mx-auto flex flex-col gap-4 relative z-10">
                 {navItems.map((item, index) => (
                   <motion.div 
                     key={item.href}
@@ -233,16 +233,16 @@ export default function Navbar() {
                     >
                       <div className="flex items-center justify-between">
                         <div>
-                          <div className="text-xl text-white font-medium mb-1">{item.label}</div>
-                          <div className="text-sm text-[#a0b1c5]">{item.description}</div>
+                          <div className="text-lg text-white font-medium mb-1">{item.label}</div>
+                          <div className="text-xs text-[#a0b1c5]">{item.description}</div>
                         </div>
                         <motion.div 
-                          className="w-8 h-8 rounded-full border border-[#3d4f69] flex items-center justify-center"
+                          className="w-7 h-7 rounded-full border border-[#3d4f69] flex items-center justify-center"
                           whileHover={{ x: 5, borderColor: "#a0b1c5" }}
                         >
                           <svg 
-                            width="12" 
-                            height="12" 
+                            width="10" 
+                            height="10" 
                             viewBox="0 0 12 12" 
                             fill="none" 
                             xmlns="http://www.w3.org/2000/svg"
@@ -270,14 +270,14 @@ export default function Navbar() {
                   href="tel:+1234567890" 
                   className="relative flex items-center gap-3 p-3 group"
                 >
-                  <div className="w-10 h-10 rounded-full border border-[#3d4f69] flex items-center justify-center bg-[#141b27]/40 group-hover:border-[#a0b1c5] transition-colors">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#a0b1c5]">
+                  <div className="w-8 h-8 rounded-full border border-[#3d4f69] flex items-center justify-center bg-[#141b27]/40 group-hover:border-[#a0b1c5] transition-colors">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#a0b1c5]">
                       <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
                   <div>
-                    <div className="text-[#a0b1c5] text-sm">Call Us</div>
-                    <div className="text-white font-medium">+1 (234) 567-890</div>
+                    <div className="text-[#a0b1c5] text-xs">Call Us</div>
+                    <div className="text-white text-sm font-medium">+1 (234) 567-890</div>
                   </div>
                 </a>
                 
@@ -285,15 +285,15 @@ export default function Navbar() {
                   href="mailto:info@framerstudio.com" 
                   className="relative flex items-center gap-3 p-3 group"
                 >
-                  <div className="w-10 h-10 rounded-full border border-[#3d4f69] flex items-center justify-center bg-[#141b27]/40 group-hover:border-[#a0b1c5] transition-colors">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#a0b1c5]">
+                  <div className="w-8 h-8 rounded-full border border-[#3d4f69] flex items-center justify-center bg-[#141b27]/40 group-hover:border-[#a0b1c5] transition-colors">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#a0b1c5]">
                       <path d="M22 8.62v7.76a2 2 0 0 1-2 2h-1.09c.048-.327.09-.656.09-.99 0-3.87-3.13-7-7-7s-7 3.13-7 7c0 .334.042.663.09.99H4a2 2 0 0 1-2-2V8.62a2.001 2.001 0 0 1 1.27-1.862l7.5-3.409a2 2 0 0 1 1.677-.036l7.773 3.409A2 2 0 0 1 22 8.62z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M12 14.5c-2.21 0-4 1.79-4 4 0 .74.21 1.41.58 2h6.84c.37-.59.58-1.26.58-2 0-2.21-1.79-4-4-4z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
                   <div>
-                    <div className="text-[#a0b1c5] text-sm">Email Us</div>
-                    <div className="text-white font-medium">info@framerstudio.com</div>
+                    <div className="text-[#a0b1c5] text-xs">Email Us</div>
+                    <div className="text-white text-sm font-medium">info@framerstudio.com</div>
                   </div>
                 </a>
               </motion.div>
