@@ -100,19 +100,22 @@ const portfolioItems = [
     id: 1,
     title: "Responsive E-Commerce",
     description: "Adaptive design with seamless shopping experience across all devices.",
-    image: "/placeholder.jpg"
+    image: "/responsivedg/resdesk1.png",
+    mobileImage: "/responsivedg/respho1.png"
   },
   {
     id: 2,
     title: "Creative Portfolio",
     description: "Showcase of creative work with fluid animations and responsive layouts.",
-    image: "/placeholder.jpg"
+    image: "/responsivedg/resdesk2.png",
+    mobileImage: "/responsivedg/respho2.png"
   },
   {
     id: 3,
     title: "Corporate Website",
     description: "Professional business site optimized for desktop, tablet, and mobile viewing.",
-    image: "/placeholder.jpg"
+    image: "/responsivedg/resdesk3.png",
+    mobileImage: "/responsivedg/respho3.png"
   }
 ];
 
@@ -374,7 +377,10 @@ export default function PortfolioShowcase() {
             >
               <div className="bg-[#1c2534] rounded-lg overflow-hidden shadow-lg">
                 <div className="aspect-[16/9] sm:aspect-[16/8] md:aspect-[16/7] relative bg-[#0f1520]">
-                  <LaptopAnimation />
+                  <LaptopAnimation 
+                    desktopImage={item.image}
+                    mobileImage={item.mobileImage}
+                  />
                 </div>
                 <div className="p-4">
                   <h3 className="text-lg md:text-xl font-semibold text-white mb-1">{item.title}</h3>

@@ -4,7 +4,15 @@ import { useRef, useState, useEffect } from "react"
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 
-export default function LaptopAnimation() {
+interface LaptopAnimationProps {
+  desktopImage?: string
+  mobileImage?: string
+}
+
+export default function LaptopAnimation({ 
+  desktopImage = "/responsivedg/resdesk1.png", 
+  mobileImage = "/responsivedg/respho1.png" 
+}: LaptopAnimationProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(containerRef, { once: false, amount: 0.05 })
   const [isLaptopOpen, setIsLaptopOpen] = useState(false)
@@ -97,7 +105,7 @@ export default function LaptopAnimation() {
                         }}
                       >
                         <Image
-                          src="/responsivedg/resdesk1.png"
+                          src={desktopImage}
                           alt="Desktop Website Showcase"
                           width={1200}
                           height={4000}
@@ -159,7 +167,7 @@ export default function LaptopAnimation() {
                       }}
                     >
                       <Image
-                        src="/responsivedg/respho1.png"
+                        src={mobileImage}
                         alt="Mobile Website Showcase"
                         width={750}
                         height={3500}
