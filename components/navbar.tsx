@@ -58,7 +58,6 @@ export default function Navbar() {
   // Animation variants
   const menuVariants = {
     closed: {
-      height: 0,
       opacity: 0,
       transition: {
         duration: 0.3,
@@ -69,7 +68,6 @@ export default function Navbar() {
       }
     },
     open: {
-      height: "100vh",
       opacity: 1,
       transition: {
         duration: 0.4,
@@ -186,7 +184,7 @@ export default function Navbar() {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className="fixed inset-0 z-40 md:hidden overflow-hidden"
+            className="fixed inset-0 z-40 md:hidden overflow-y-auto"
             initial="closed"
             animate="open"
             exit="closed"
@@ -207,7 +205,7 @@ export default function Navbar() {
             <div className="absolute top-1/4 -left-20 w-40 h-40 rounded-full bg-[#a0b1c5]/5 blur-3xl"></div>
             <div className="absolute bottom-1/4 -right-20 w-40 h-40 rounded-full bg-[#5d7b9c]/5 blur-3xl"></div>
             
-            <div className="container mx-auto h-full px-6 py-20 flex flex-col justify-center">
+            <div className="container mx-auto min-h-screen px-6 py-20 flex flex-col justify-between">
               <motion.div 
                 className="text-2xl font-serif mb-10 text-center relative z-10"
                 initial={{ opacity: 0, y: -10 }}
@@ -259,7 +257,7 @@ export default function Navbar() {
               
               {/* Contact Information */}
               <motion.div 
-                className="mt-10 flex flex-col gap-4 w-full max-w-md mx-auto relative z-10"
+                className="mt-8 pt-2 flex flex-col gap-4 w-full max-w-md mx-auto relative z-10"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}

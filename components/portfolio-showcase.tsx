@@ -46,12 +46,11 @@ export default function PortfolioShowcase() {
   // For title animation
   const titleRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
-    target: titleRef,
-    offset: ["start end", "end start"],
+    target: sectionRef,
+    offset: ["start start", "end start"],
   })
 
-  const y = useTransform(scrollYProgress, [0, 0.5], ["100px", "-100px"])
-  const opacity = useTransform(scrollYProgress, [0, 0.15, 0.8, 1], [0, 1, 1, 0])
+  const opacity = useTransform(scrollYProgress, [0, 0.1, 0.2], [1, 1, 0.8])
 
   // Store ScrollTrigger instance in a ref to avoid recreating it on re-renders
   const scrollTriggerRef = useRef<any>(null);
@@ -86,7 +85,11 @@ export default function PortfolioShowcase() {
       const panelWidth = track.children[0].getBoundingClientRect().width;
       
       // Calculate padding needed to center the first and last panels
-      const centerOffset = Math.max(0, (viewportWidth - panelWidth) / 2);
+      // For mobile, use less padding to make first item more visible immediately
+      const isMobile = window.innerWidth < 768;
+      const centerOffset = isMobile 
+        ? 20 // Small padding for mobile to make first item fully visible
+        : Math.max(0, (viewportWidth - panelWidth) / 2);
       
       // Apply padding to center first panel
       gsap.set(track, { 
@@ -113,6 +116,8 @@ export default function PortfolioShowcase() {
           start: "top top",
           end: `+=${sectionHeight}`,
           pin: true,
+          pinType: "transform",
+          pinSpacing: true,
           anticipatePin: 1,
           scrub: 1, // Smooth scrubbing
           invalidateOnRefresh: true,
@@ -131,7 +136,11 @@ export default function PortfolioShowcase() {
   
       // Animate the track position to create the horizontal scrolling effect
       timelineRef.current.to(track, {
-        x: () => -(totalTrackWidth - viewportWidth),
+        x: () => {
+          // For mobile, start with a slight offset to make the first item fully visible
+          const initialOffset = window.innerWidth < 768 ? 0 : 0;
+          return -(totalTrackWidth - viewportWidth - initialOffset);
+        },
         ease: "power1.inOut",
       });
     };
@@ -164,83 +173,93 @@ export default function PortfolioShowcase() {
   }, []); // Empty dependency array - runs once on mount
 
   return (
-    <section
-      id="portfolio"
-      ref={sectionRef}
-      className="py-8 md:py-12 bg-gradient-to-b from-[#0f1520] to-[#141b27] relative overflow-hidden"
-    >
-      {/* Background Elements - Removed */}
-      <div className="container mx-auto px-10 md:px-6 relative flex flex-col h-full">
-        <motion.div ref={titleRef} className="text-center mb-0 md:mb-4" style={{ y, opacity }}>
-          <div className="inline-block px-4 py-1 mb-2 bg-[#1c2534] rounded-full relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-[#a0b1c5]/10 via-[#8faabe]/10 to-[#5d7b9c]/10" />
-            <span className="relative text-[#c6d4e3] text-sm uppercase tracking-widest">Responsive Design</span>
-          </div>
-          <h2 className="font-serif text-2xl md:text-4xl mb-1 md:mb-2">Our Work in Motion</h2>
-          <p className="text-[#a0b1c5] text-sm md:text-lg max-w-2xl mx-auto">
-            Experience the fluidity and elegance of our Framer-built websites across all devices.
-          </p>
-          
-          {/* Scroll progress indicator */}
-          <div className="flex gap-2 mt-2 md:mt-3 justify-center">
-            {portfolioItems.map((_, index) => (
-              <div 
-                key={index} 
-                className={`h-1 rounded-full transition-all duration-300 ${
-                  index === activePanel 
-                    ? "bg-[#8faabe] w-8 md:w-12" 
-                    : "bg-[#2a3546] w-4 md:w-6"
-                }`}
-              />
-            ))}
+    <div className="relative z-50">
+      <section
+        id="portfolio"
+        ref={sectionRef}
+        className="py-0 md:py-0 bg-gradient-to-b from-[#0f1520] to-[#141b27] relative overflow-hidden"
+      >
+        {/* Title section - sticky header */}
+        <motion.div 
+          ref={titleRef} 
+          className="sticky top-0 z-[9999] py-8 md:py-12" 
+          style={{ opacity }}
+        >
+          <div className="container mx-auto px-10 md:px-6 text-center">
+            <div className="inline-block px-4 py-1 mb-2 bg-[#1c2534] rounded-full relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#a0b1c5]/10 via-[#8faabe]/10 to-[#5d7b9c]/10" />
+              <span className="relative text-[#c6d4e3] text-sm uppercase tracking-widest">Responsive Design</span>
+            </div>
+            <h2 className="font-serif text-2xl md:text-4xl mb-1 md:mb-2">Our Work in Motion</h2>
+            <p className="text-[#a0b1c5] text-sm md:text-lg max-w-2xl mx-auto">
+              Experience the fluidity and elegance of our Framer-built websites across all devices.
+            </p>
+            
+            {/* Scroll progress indicator */}
+            <div className="flex gap-2 mt-2 md:mt-3 justify-center">
+              {portfolioItems.map((_, index) => (
+                <div 
+                  key={index} 
+                  className={`h-1 rounded-full transition-all duration-300 ${
+                    index === activePanel 
+                      ? "bg-[#8faabe] w-8 md:w-12" 
+                      : "bg-[#2a3546] w-4 md:w-6"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </motion.div>
-        
-        {/* Horizontal Scrolling Portfolio Section */}
-        <div 
-          ref={trackRef} 
-          className="flex flex-nowrap gap-4 md:gap-8 items-start justify-start min-h-[35vh] md:min-h-[45vh] -mt-0 mb-2 mx-auto"
-        >
-          {portfolioItems.map((item, index) => (
-            <div 
-              key={item.id}
-              className={`shrink-0 w-[85vw] sm:w-[80vw] md:w-[70vw] lg:w-[55vw] transition-all duration-500 ${
-                index === activePanel ? "scale-100 opacity-100" : "scale-95 opacity-70"
-              }`}
-            >
-              <CardSpotlight
-                className="bg-[#111622]/80 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-[#2a3546]"
-                radius={450}
-                color="#2a3546"
+
+        {/* Background Elements - Removed */}
+        <div className="container mx-auto px-10 md:px-6 relative flex flex-col h-full pt-6">
+          
+          {/* Horizontal Scrolling Portfolio Section */}
+          <div 
+            ref={trackRef} 
+            className="flex flex-nowrap gap-2 sm:gap-4 md:gap-8 items-start justify-start min-h-[35vh] md:min-h-[45vh] -mt-0 mb-2 mx-auto relative z-20"
+          >
+            {portfolioItems.map((item, index) => (
+              <div 
+                key={item.id}
+                className={`shrink-0 w-[90vw] sm:w-[80vw] md:w-[70vw] lg:w-[55vw] transition-all duration-500 ${
+                  index === activePanel ? "scale-100 opacity-100" : "scale-95 opacity-70"
+                }`}
               >
-                <div className="aspect-[16/12] sm:aspect-[16/10] md:aspect-[16/7] relative bg-[#0f1520]">
-                  <LaptopAnimation 
-                    desktopImage={item.image}
-                    mobileImage={item.mobileImage}
-                  />
-                </div>
-                <div className="p-2 md:p-4">
-                  <h3 className="text-base md:text-xl font-semibold text-white mb-0.5 md:mb-1">{item.title}</h3>
-                  <p className="text-[#a0b1c5] text-xs md:text-base max-w-lg">{item.description}</p>
-                  <Button
-                    variant="nav"
-                    size="sm"
-                    className="mt-1 md:mt-2"
-                  >
-                    View Project
-                  </Button>
-                </div>
-              </CardSpotlight>
-            </div>
-          ))}
+                <CardSpotlight
+                  className="bg-[#111622]/80 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-[#2a3546]"
+                  radius={450}
+                  color="#2a3546"
+                >
+                  <div className="aspect-[16/12] sm:aspect-[16/10] md:aspect-[16/7] relative bg-[#0f1520]">
+                    <LaptopAnimation 
+                      desktopImage={item.image}
+                      mobileImage={item.mobileImage}
+                    />
+                  </div>
+                  <div className="p-2 md:p-4">
+                    <h3 className="text-base md:text-xl font-semibold text-white mb-0.5 md:mb-1">{item.title}</h3>
+                    <p className="text-[#a0b1c5] text-xs md:text-base max-w-lg">{item.description}</p>
+                    <Button
+                      variant="nav"
+                      size="sm"
+                      className="mt-1 md:mt-2"
+                    >
+                      View Project
+                    </Button>
+                  </div>
+                </CardSpotlight>
+              </div>
+            ))}
+          </div>
+          
+          {/* Scroll hint for mobile */}
+          <div className="fixed bottom-6 left-0 right-0 mx-auto text-center text-[#5d7b9c] text-xs md:text-sm md:hidden animate-bounce z-[9999]">
+            Scroll to explore more
+          </div>
         </div>
-      </div>
-      
-      {/* Scroll hint for mobile */}
-      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-[#5d7b9c] text-xs md:text-sm md:hidden animate-bounce">
-        Scroll to explore more
-      </div>
-    </section>
+      </section>
+    </div>
   )
 }
 
