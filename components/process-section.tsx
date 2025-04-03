@@ -2,6 +2,7 @@
 
 import { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
+import { CardSpotlight } from "@/components/ui/card-spotlight"
 
 export default function ProcessSection() {
   const ref = useRef<HTMLDivElement>(null)
@@ -62,75 +63,28 @@ export default function ProcessSection() {
           </div>
 
           <div className="relative">
-            {/* Timeline Line */}
-            <motion.div 
-              className="absolute left-[15px] md:left-1/2 top-0 bottom-0 w-px bg-[#2a3546] md:transform md:-translate-x-px"
-              animate={{
-                backgroundImage: [
-                  "linear-gradient(to bottom, rgba(160, 177, 197, 0.1), rgba(160, 177, 197, 0.3), rgba(93, 123, 156, 0.3), rgba(93, 123, 156, 0.1))",
-                  "linear-gradient(to bottom, rgba(93, 123, 156, 0.1), rgba(93, 123, 156, 0.3), rgba(160, 177, 197, 0.3), rgba(160, 177, 197, 0.1))",
-                  "linear-gradient(to bottom, rgba(160, 177, 197, 0.1), rgba(160, 177, 197, 0.3), rgba(93, 123, 156, 0.3), rgba(93, 123, 156, 0.1))"
-                ]
-              }}
-              transition={{
-                duration: 8,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-            />
-
             {/* Process Steps */}
-            <div className="space-y-12 md:space-y-0">
+            <div className="space-y-16 md:space-y-24">
               {steps.map((step, index) => (
                 <div key={index} className="relative">
                   <motion.div
-                    className={`flex flex-col md:flex-row ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}
+                    className="flex flex-col items-center"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
                   >
-                    {/* Timeline Dot */}
-                    <div className="absolute left-0 md:left-1/2 top-0 w-8 h-8 bg-[#1c2534] border border-[#2a3546] rounded-full flex items-center justify-center md:transform md:-translate-x-1/2 overflow-hidden">
-                      {/* Colorful Background */}
-                      <motion.div 
-                        className={`absolute inset-0 bg-gradient-to-br ${step.gradient} opacity-20`}
-                        animate={{
-                          opacity: [0.1, 0.4, 0.1],
-                        }}
-                        transition={{
-                          duration: 3,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                          delay: index * 0.5
-                        }}
-                      />
-                      <span className="relative text-xs font-medium text-[#c6d4e3]">{step.number}</span>
-                    </div>
-
                     {/* Content */}
-                    <div className={`pl-12 md:pl-0 md:w-1/2 ${index % 2 === 0 ? "md:pr-12" : "md:pl-12"}`}>
-                      <div
-                        className={`p-6 bg-[#1c2534]/50 border border-[#2a3546] ${index % 2 === 0 ? "md:text-right" : ""} relative overflow-hidden group hover:border-[#3d4f69] transition-colors`}
+                    <div className="w-full md:w-3/4 relative">
+                      <CardSpotlight
+                        className="p-6 bg-[#111622]/80 backdrop-blur-sm border border-[#2a3546] relative overflow-hidden group hover:border-[#3d4f69] transition-colors text-center"
+                        radius={200}
+                        color="#2a3546"
                       >
-                        {/* Colorful Border */}
-                        <motion.div
-                          className={`absolute inset-y-0 ${index % 2 === 0 ? "right-0" : "left-0"} w-[2px] bg-gradient-to-b ${step.gradient} opacity-70 group-hover:opacity-100 transition-opacity`}
-                          animate={{
-                            opacity: [0.5, 0.9, 0.5],
-                            height: ["100%", "105%", "100%"],
-                          }}
-                          transition={{
-                            duration: 5,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                            delay: index * 0.7
-                          }}
-                        />
-
+                        <div className="font-serif text-4xl md:text-6xl mb-4 text-white/20">{step.number}</div>
                         <h3 className="text-xl mb-2 font-medium">{step.title}</h3>
                         <p className="text-[#a0b1c5]">{step.description}</p>
-                      </div>
+                      </CardSpotlight>
                     </div>
                   </motion.div>
                 </div>

@@ -38,7 +38,6 @@ export default function IntroSection() {
               radius={250}
               color="#2a3546"
             >
-              <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] opacity-70 group-hover:opacity-100 transition-opacity"></div>
               <Zap className="text-[#a0b1c5] mb-6 h-8 w-8" />
               <h3 className="text-xl mb-3 font-medium">Unmatched Speed</h3>
               <p className="text-[#a0b1c5]">
@@ -51,7 +50,6 @@ export default function IntroSection() {
               radius={250}
               color="#2a3546"
             >
-              <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-[#97a8bc] to-[#5f7d9e] opacity-70 group-hover:opacity-100 transition-opacity"></div>
               <Palette className="text-[#97a8bc] mb-6 h-8 w-8" />
               <h3 className="text-xl mb-3 font-medium">Stunning Design</h3>
               <p className="text-[#a0b1c5]">Create visually impressive experiences that captivate your audience.</p>
@@ -62,7 +60,6 @@ export default function IntroSection() {
               radius={250}
               color="#2a3546"
             >
-              <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-[#8fa0b4] to-[#617f9f] opacity-70 group-hover:opacity-100 transition-opacity"></div>
               <Code className="text-[#8fa0b4] mb-6 h-8 w-8" />
               <h3 className="text-xl mb-3 font-medium">Technical Excellence</h3>
               <p className="text-[#a0b1c5]">

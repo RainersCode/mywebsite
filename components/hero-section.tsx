@@ -18,7 +18,6 @@ const showcaseItems = [
     glowColor: "sky",
     content: (
       <div className="w-full h-full flex flex-col justify-center items-center scale-[0.7]">
-        <div className="w-28 h-0.5 bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] mb-3"></div>
         <div className="w-36 h-5 bg-white/90 rounded-sm mb-3 font-semibold text-[8px] text-black flex items-center justify-center">HEADLINE TEXT</div>
         <div className="w-28 h-2 bg-gradient-to-r from-white/70 to-white/60 rounded-sm mb-3"></div>
         <div className="flex gap-3 mt-1">
@@ -450,85 +449,9 @@ export default function HeroSection() {
         <div className="absolute inset-0 bg-grid-[#a0b1c5]/[0.02]"></div>
       </div>
 
-      {/* Animated decorative elements - with side-to-side motion */}
+      {/* Animated decorative elements - Removed */}
       <div className="absolute inset-0 z-10 overflow-hidden pointer-events-none">
-        <motion.div 
-          className="absolute top-1/4 left-0 w-1/3 h-[1px] bg-gradient-to-r from-transparent via-[#a0b1c5] to-transparent shadow-[0_0_8px_0px_#a0b1c5]" 
-          animate={{
-            x: [-100, 100, -100],
-            opacity: [0, 1, 0]
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-1/4 right-0 w-1/3 h-[1px] bg-gradient-to-r from-transparent via-[#a0b1c5] to-transparent shadow-[0_0_8px_0px_#a0b1c5]" 
-          animate={{
-            x: [100, -100, 100],
-            opacity: [0, 1, 0]
-          }}
-          transition={{
-            duration: 22,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2
-          }}
-        />
-        <motion.div 
-          className="absolute top-2/3 left-1/4 w-1/4 h-[1px] bg-gradient-to-r from-transparent via-[#5d7b9c] to-transparent shadow-[0_0_8px_0px_#5d7b9c]" 
-          animate={{
-            x: [-80, 80, -80],
-            opacity: [0, 1, 0]
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1
-          }}
-        />
-        <motion.div 
-          className="absolute top-1/3 right-1/4 w-1/4 h-[1px] bg-gradient-to-r from-transparent via-[#5d7b9c] to-transparent shadow-[0_0_8px_0px_#5d7b9c]" 
-          animate={{
-            x: [80, -80, 80],
-            opacity: [0, 1, 0]
-          }}
-          transition={{
-            duration: 24,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 3
-          }}
-        />
-        <motion.div 
-          className="absolute top-1/2 left-0 w-1/4 h-[1px] bg-gradient-to-r from-transparent via-[#a0b1c5] to-transparent shadow-[0_0_8px_0px_#a0b1c5]" 
-          animate={{
-            x: [-60, 100, -60],
-            opacity: [0, 1, 0]
-          }}
-          transition={{
-            duration: 26,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 4
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-1/3 right-0 w-1/4 h-[1px] bg-gradient-to-r from-transparent via-[#5d7b9c] to-transparent shadow-[0_0_8px_0px_#5d7b9c]" 
-          animate={{
-            x: [60, -100, 60],
-            opacity: [0, 1, 0]
-          }}
-          transition={{
-            duration: 28,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 5
-          }}
-        />
+        {/* Decorative elements removed */}
       </div>
 
       {/* Content */}
@@ -570,7 +493,11 @@ export default function HeroSection() {
         transition={{ repeat: Number.POSITIVE_INFINITY, duration: 2 }}
         style={{ opacity }}
       >
-        <div className="w-[1px] h-10 bg-gradient-to-b from-[#a0b1c5]/50 to-[#5d7b9c]/50 mx-auto" />
+        <div className="text-center w-6 h-6 rounded-full bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] mx-auto flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+            <path d="M12 5v14M5 12l7 7 7-7"/>
+          </svg>
+        </div>
         <p className="bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] bg-clip-text text-transparent text-xs mt-2 tracking-widest">SCROLL</p>
       </motion.div>
     </section>
