@@ -546,7 +546,7 @@ export default function HeroSection() {
               </h1>
             </div>
             <p className="text-zinc-400 text-lg md:text-xl mb-10 max-w-xl mx-auto">
-              Transforming ideas into fast, engaging, and user-friendly digital experiences tailored to your unique needs.
+              Transforming ideas into fast, engaging, and user-friendly digital experiences tailored to your unique need
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button
