@@ -30,45 +30,56 @@ export const CardSpotlight = ({
   }
 
   const [isHovering, setIsHovering] = useState(false);
-  const handleMouseEnter = () => setIsHovering(true);
+  const handleMouseEnter = () => {
+    // Check if no-hover class is present
+    if (!className?.includes('no-hover')) {
+      setIsHovering(true);
+    }
+  };
   const handleMouseLeave = () => setIsHovering(false);
+  
+  // Check if this component should have hover effects
+  const enableHoverEffects = !className?.includes('no-hover');
+
   return (
     <div
       className={cn(
         "group/spotlight p-10 rounded-md relative border border-neutral-800 bg-black dark:border-neutral-800",
         className
       )}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseMove={enableHoverEffects ? handleMouseMove : undefined}
+      onMouseEnter={enableHoverEffects ? handleMouseEnter : undefined}
+      onMouseLeave={enableHoverEffects ? handleMouseLeave : undefined}
       {...props}
     >
-      <motion.div
-        className="pointer-events-none absolute z-10 -inset-px rounded-md opacity-0 transition duration-300 group-hover/spotlight:opacity-100"
-        style={{
-          backgroundColor: color,
-          mixBlendMode: "overlay",
-          maskImage: useMotionTemplate`
-            radial-gradient(
-              ${radius}px circle at ${mouseX}px ${mouseY}px,
-              white,
-              transparent 80%
-            )
-          `,
-        }}
-      >
-        {isHovering && (
-          <CanvasRevealEffect
-            animationSpeed={5}
-            containerClassName="bg-transparent absolute inset-0 pointer-events-none"
-            colors={[
-              [59, 130, 246],
-              [139, 92, 246],
-            ]}
-            dotSize={3}
-          />
-        )}
-      </motion.div>
+      {enableHoverEffects && (
+        <motion.div
+          className="pointer-events-none absolute z-10 -inset-px rounded-md opacity-0 transition duration-300 group-hover/spotlight:opacity-100"
+          style={{
+            backgroundColor: color,
+            mixBlendMode: "overlay",
+            maskImage: useMotionTemplate`
+              radial-gradient(
+                ${radius}px circle at ${mouseX}px ${mouseY}px,
+                white,
+                transparent 80%
+              )
+            `,
+          }}
+        >
+          {isHovering && (
+            <CanvasRevealEffect
+              animationSpeed={5}
+              containerClassName="bg-transparent absolute inset-0 pointer-events-none"
+              colors={[
+                [59, 130, 246],
+                [139, 92, 246],
+              ]}
+              dotSize={3}
+            />
+          )}
+        </motion.div>
+      )}
       <div className="pointer-events-auto relative z-20">
         {children}
       </div>

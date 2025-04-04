@@ -217,7 +217,7 @@ export default function Navbar() {
                 FRAMER<span className="text-[#a0b1c5]">STUDIO</span>
               </motion.div>
               
-              <nav className="w-full max-w-md mx-auto flex flex-col gap-4 relative z-10">
+              <nav className="w-full max-w-md mx-auto flex flex-col gap-2 relative z-10">
                 {navItems.map((item, index) => (
                   <motion.div 
                     key={item.href}
@@ -228,21 +228,21 @@ export default function Navbar() {
                     <div className="absolute inset-0 bg-gradient-to-r from-[#141b27]/50 to-[#1c2534]/50 rounded-lg scale-95 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300"></div>
                     <Link
                       href={item.href}
-                      className="relative block p-4 z-10"
+                      className="relative block p-3 z-10"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       <div className="flex items-center justify-between">
                         <div>
-                          <div className="text-lg text-white font-medium mb-1">{item.label}</div>
-                          <div className="text-xs text-[#a0b1c5]">{item.description}</div>
+                          <div className="text-base text-white font-medium mb-0.5">{item.label}</div>
+                          <div className="text-[10px] text-[#a0b1c5]">{item.description}</div>
                         </div>
                         <motion.div 
-                          className="w-7 h-7 rounded-full border border-[#3d4f69] flex items-center justify-center"
+                          className="w-6 h-6 rounded-full border border-[#3d4f69] flex items-center justify-center"
                           whileHover={{ x: 5, borderColor: "#a0b1c5" }}
                         >
                           <svg 
-                            width="10" 
-                            height="10" 
+                            width="8" 
+                            height="8" 
                             viewBox="0 0 12 12" 
                             fill="none" 
                             xmlns="http://www.w3.org/2000/svg"

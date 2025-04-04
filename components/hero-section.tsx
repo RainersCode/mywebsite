@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useCallback } from "react"
+import { useRef, useCallback, useEffect, useState } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
@@ -358,91 +358,175 @@ export default function HeroSection() {
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"])
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
 
+  // Detect if we're on mobile
+  const [isMobile, setIsMobile] = useState(false)
+  
+  useEffect(() => {
+    // Check if we're on mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    // Initial check
+    checkMobile()
+    
+    // Add resize listener
+    window.addEventListener('resize', checkMobile)
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   // Particles initialization
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadSlim(engine)
   }, [])
+
+  // Optimized particle settings for mobile
+  const particleOptions = isMobile ? 
+    {
+      fpsLimit: 30, // Lower FPS limit for mobile
+      interactivity: {
+        events: {
+          onHover: {
+            enable: false, // Disable hover interactions on mobile
+          },
+          resize: true,
+        },
+      },
+      particles: {
+        color: {
+          value: "#a0b1c5",
+        },
+        links: {
+          color: "#5d7b9c",
+          distance: 150,
+          enable: true,
+          opacity: 0.3,
+          width: 1,
+        },
+        move: {
+          enable: true,
+          speed: 0.5, // Slower movement on mobile
+          direction: "none" as const,
+          random: false,
+          straight: false,
+          outModes: {
+            default: "bounce" as const,
+          },
+        },
+        number: {
+          density: {
+            enable: true,
+            area: 1000, // Larger area = fewer particles
+          },
+          value: 30, // Far fewer particles on mobile
+        },
+        opacity: {
+          value: 0.3, // Lower opacity
+        },
+        shape: {
+          type: "circle" as const,
+        },
+        size: {
+          value: { min: 1, max: 2 }, // Smaller particles
+        },
+      },
+      detectRetina: false, // Disable retina detection for performance
+    } 
+    : 
+    {
+      // Desktop settings - already optimized
+      fpsLimit: 60,
+      interactivity: {
+        events: {
+          onHover: {
+            enable: true,
+            mode: "repulse" as const,
+          },
+          resize: true,
+        },
+        modes: {
+          repulse: {
+            distance: 100,
+            duration: 0.4,
+          },
+        },
+      },
+      particles: {
+        color: {
+          value: "#a0b1c5",
+        },
+        links: {
+          color: "#5d7b9c",
+          distance: 150,
+          enable: true,
+          opacity: 0.5,
+          width: 1,
+        },
+        move: {
+          enable: true,
+          direction: "none" as const,
+          outModes: {
+            default: "bounce" as const,
+          },
+          random: true,
+          speed: 1,
+          straight: false,
+        },
+        number: {
+          density: {
+            enable: true,
+            area: 800,
+          },
+          value: 80,
+        },
+        opacity: {
+          value: 0.5,
+        },
+        shape: {
+          type: "circle" as const,
+        },
+        size: {
+          value: { min: 1, max: 3 },
+        },
+      },
+      detectRetina: true,
+    };
 
   return (
     <section ref={ref} className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Enhanced dark starry background */}
       <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 to-black z-0" />
       
-      {/* Particles */}
+      {/* Particles - shown on both desktop and mobile with different settings */}
       <Particles
         id="tsparticles"
         className="absolute inset-0 z-10"
         init={particlesInit}
-        options={{
-          fpsLimit: 120,
-          interactivity: {
-            events: {
-              onHover: {
-                enable: true,
-                mode: "repulse",
-              },
-              resize: true,
-            },
-            modes: {
-              repulse: {
-                distance: 100,
-                duration: 0.4,
-              },
-            },
-          },
-          particles: {
-            color: {
-              value: "#a0b1c5",
-            },
-            links: {
-              color: "#5d7b9c",
-              distance: 150,
-              enable: true,
-              opacity: 0.5,
-              width: 1,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: {
-                default: "bounce",
-              },
-              random: true,
-              speed: 1,
-              straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-                area: 800,
-              },
-              value: 80,
-            },
-            opacity: {
-              value: 0.5,
-            },
-            shape: {
-              type: "circle",
-            },
-            size: {
-              value: { min: 1, max: 3 },
-            },
-          },
-          detectRetina: true,
-        }}
+        options={particleOptions}
       />
       
-      {/* Subtle cosmic dust/nebula effect */}
+      {/* Mobile-only background pattern - removed since we're keeping particles */}
+      
+      {/* Subtle cosmic dust/nebula effect - simplified on mobile */}
       <div className="absolute inset-0 opacity-30 z-5">
         <div className="absolute top-1/4 -left-1/4 w-1/2 h-1/2 rounded-full bg-gradient-to-r from-[#a0b1c5]/20 to-transparent blur-[100px] transform rotate-12" />
         <div className="absolute bottom-1/4 -right-1/4 w-1/2 h-1/2 rounded-full bg-gradient-to-r from-[#5d7b9c]/20 to-transparent blur-[100px] transform -rotate-12" />
       </div>
 
-      {/* Parallax Background - simplified since we now have stars */}
-      <motion.div className="absolute inset-0 z-5" style={{ y: backgroundY }}>
-        {/* Add a subtle silver color overlay */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-[#a0b1c5]/10 via-transparent to-[#5d7b9c]/10 z-10" />
-      </motion.div>
+      {/* Parallax Background - only apply motion effects on desktop */}
+      {isMobile ? (
+        <div className="absolute inset-0 z-5">
+          {/* Add a subtle silver color overlay */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#a0b1c5]/10 via-transparent to-[#5d7b9c]/10 z-10" />
+        </div>
+      ) : (
+        <motion.div className="absolute inset-0 z-5" style={{ y: backgroundY }}>
+          {/* Add a subtle silver color overlay */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#a0b1c5]/10 via-transparent to-[#5d7b9c]/10 z-10" />
+        </motion.div>
+      )}
 
       {/* Background Grid */}
       <div className="absolute inset-0 z-0">
@@ -450,61 +534,104 @@ export default function HeroSection() {
         <div className="absolute inset-0 bg-grid-[#a0b1c5]/[0.02]"></div>
       </div>
 
-      {/* Animated decorative elements - Removed */}
-      <div className="absolute inset-0 z-10 overflow-hidden pointer-events-none">
-        {/* Decorative elements removed */}
-      </div>
-
       {/* Content */}
       <div className="container mx-auto px-6 relative z-30">
-        <motion.div className="max-w-3xl mx-auto text-center" style={{ y: textY, opacity }}>
-          <div className="mb-6">
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight">
-              Beautiful Websites, <br />
-              <span className="bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] bg-clip-text text-transparent">Built Faster</span>
-            </h1>
+        {isMobile ? (
+          // Static content for mobile
+          <div className="max-w-3xl mx-auto text-center">
+            <div className="mb-6">
+              <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight">
+                Beautiful Websites, <br />
+                <span className="bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] bg-clip-text text-transparent">Built Faster</span>
+              </h1>
+            </div>
+            <p className="text-zinc-400 text-lg md:text-xl mb-10 max-w-xl mx-auto">
+              Leveraging Framer to create stunning, high-performance websites for ambitious brands.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Button
+                asChild
+                variant="nav"
+                size="lg"
+              >
+                <Link href="#portfolio">
+                  VIEW SHOWCASE
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="nav"
+                size="lg"
+                className="bg-gradient-to-r from-[#141b27] to-[#1c2534] border-[#4d5f79] hover:border-[#a0b1c5] hover:bg-gradient-to-r hover:from-[#15202f] hover:to-[#1f2a3c]"
+              >
+                <Link href="#contact">
+                  START YOUR PROJECT
+                </Link>
+              </Button>
+            </div>
           </div>
-          <p className="text-zinc-400 text-lg md:text-xl mb-10 max-w-xl mx-auto">
-            Leveraging Framer to create stunning, high-performance websites for ambitious brands.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button
-              asChild
-              variant="nav"
-              size="lg"
-            >
-              <Link href="#portfolio">
-                VIEW SHOWCASE
-              </Link>
-            </Button>
-            <Button
-              asChild
-              variant="nav"
-              size="lg"
-              className="bg-gradient-to-r from-[#141b27] to-[#1c2534] border-[#4d5f79] hover:border-[#a0b1c5] hover:bg-gradient-to-r hover:from-[#15202f] hover:to-[#1f2a3c]"
-            >
-              <Link href="#contact">
-                START YOUR PROJECT
-              </Link>
-            </Button>
-          </div>
-        </motion.div>
+        ) : (
+          // Animated content for desktop
+          <motion.div className="max-w-3xl mx-auto text-center" style={{ y: textY, opacity }}>
+            <div className="mb-6">
+              <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight">
+                Beautiful Websites, <br />
+                <span className="bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] bg-clip-text text-transparent">Built Faster</span>
+              </h1>
+            </div>
+            <p className="text-zinc-400 text-lg md:text-xl mb-10 max-w-xl mx-auto">
+              Leveraging Framer to create stunning, high-performance websites for ambitious brands.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Button
+                asChild
+                variant="nav"
+                size="lg"
+              >
+                <Link href="#portfolio">
+                  VIEW SHOWCASE
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="nav"
+                size="lg"
+                className="bg-gradient-to-r from-[#141b27] to-[#1c2534] border-[#4d5f79] hover:border-[#a0b1c5] hover:bg-gradient-to-r hover:from-[#15202f] hover:to-[#1f2a3c]"
+              >
+                <Link href="#contact">
+                  START YOUR PROJECT
+                </Link>
+              </Button>
+            </div>
+          </motion.div>
+        )}
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ repeat: Number.POSITIVE_INFINITY, duration: 2 }}
-        style={{ opacity }}
-      >
-        <div className="text-center w-6 h-6 rounded-full bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] mx-auto flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
-            <path d="M12 5v14M5 12l7 7 7-7"/>
-          </svg>
+      {/* Scroll Indicator - simplified on mobile */}
+      {isMobile ? (
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+          <div className="text-center w-6 h-6 rounded-full bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] mx-auto flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+              <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+          </div>
+          <p className="bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] bg-clip-text text-transparent text-xs mt-2 tracking-widest">SCROLL</p>
         </div>
-        <p className="bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] bg-clip-text text-transparent text-xs mt-2 tracking-widest">SCROLL</p>
-      </motion.div>
+      ) : (
+        <motion.div
+          className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ repeat: Number.POSITIVE_INFINITY, duration: 2 }}
+          style={{ opacity }}
+        >
+          <div className="text-center w-6 h-6 rounded-full bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] mx-auto flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+              <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+          </div>
+          <p className="bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] bg-clip-text text-transparent text-xs mt-2 tracking-widest">SCROLL</p>
+        </motion.div>
+      )}
     </section>
   )
 }
