@@ -3,27 +3,41 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft } from "lucide-react"
+import LaptopAnimation from "@/components/laptop-animation"
 
 // Portfolio items with extended content for detail pages
 const portfolioItems = [
   {
     id: 1,
     slug: "responsive-ecommerce",
-    title: "Responsive E-Commerce",
-    description: "Adaptive design with seamless shopping experience across all devices.",
+    title: "Rugby Club Website & Admin Portal",
+    description: "Comprehensive website for a rugby club with public content and secure admin portal.",
     image: "/responsivedg/resdesk1.png",
     mobileImage: "/responsivedg/respho1.png",
-    fullDescription: "Our responsive e-commerce project demonstrates how a modern online store can provide an optimal shopping experience across all devices. We focused on creating fluid layouts that adapt to any screen size, ensuring product displays, shopping carts, and checkout processes work flawlessly whether on desktop or mobile.",
+    fullDescription: "This project involves the development of a comprehensive website for a rugby club, designed to serve both public supporters and internal administrators. The primary goal is to create an engaging, modern, and mobile-responsive public-facing website showcasing club information (articles, fixtures, galleries, team details, contacts) while providing a secure and intuitive admin portal for easy content management. The website follows design principles from v0.dev and utilizes the CodeGuide Starter Lite boilerplate for structure.",
     features: [
-      "Fluid grid layouts that adjust to any screen size",
-      "Optimized product galleries that work on touch and mouse interfaces",
-      "Responsive checkout process designed for conversion",
-      "Performance optimized for mobile data connections",
-      "Cross-browser compatibility across modern browsers"
+      "Public Content Display: Sections for Articles, Fixtures, Galleries, Team Players, Coaches, and Contacts",
+      "Secure Admin Authentication: Email/password login for administrators powered by Clerk Auth",
+      "Content Management System (CMS): Admin dashboard to add, edit, and delete all types of content",
+      "Social Media Integration: Functionality to share articles directly to Facebook",
+      "Responsive Design: Fully responsive layout adapting to desktops, tablets, and mobile devices",
+      "Real-time Updates: Content changes made in the admin portal are reflected instantly on the public website",
+      "Modern UI/UX: Clean, intuitive interface using Shadcn UI components"
     ],
-    technologies: ["Next.js", "Tailwind CSS", "Framer Motion", "Responsive Images", "CSS Grid/Flexbox"],
-    challenge: "The main challenge was creating a seamless shopping experience that works equally well on desktop, tablet, and mobile devices while maintaining fast load times and smooth interactions.",
-    solution: "We implemented a mobile-first approach, designing the core experience for small screens first, then progressively enhancing it for larger displays. This ensured essential functionality was optimized for all users."
+    technologies: [
+      "Next.js 14 (App Router)",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Shadcn UI", 
+      "V0 by Vercel",
+      "Supabase",
+      "Clerk Auth",
+      "Vercel",
+      "Git"
+    ],
+    challenge: "The main challenge is to empower the rugby club with a dynamic online presence that is easy to update for non-technical admin staff. The club needed a reliable way to keep supporters informed with timely news, match schedules, and other content, replacing potentially outdated or cumbersome processes. This required a solution that balanced a professional, modern public interface with a secure, user-friendly backend for content management.",
+    solution: "We are building a web application using Next.js 14 with the App Router structure. The solution comprises two core components: a visually appealing public website built with Shadcn UI components for displaying club content, and a secure admin portal accessible via Clerk Auth for content management. The backend is powered by Supabase, providing a PostgreSQL database, real-time capabilities for instant content updates, and API endpoints. Integration with the Facebook API allows for seamless sharing of articles."
   },
   {
     id: 2,
@@ -104,37 +118,46 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
         </div>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <div className="bg-[#111622]/80 rounded-lg overflow-hidden shadow-lg border border-[#2a3546]">
-          <div className="relative aspect-[16/9]">
-            <Image
-              src={project.image}
-              alt={`${project.title} - Desktop`}
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover"
-            />
+      {params.slug === "responsive-ecommerce" ? (
+        <div className="mb-12">
+          <LaptopAnimation 
+            desktopImage={project.image}
+            mobileImage={project.mobileImage}
+          />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          <div className="bg-[#111622]/80 rounded-lg overflow-hidden shadow-lg border border-[#2a3546]">
+            <div className="relative aspect-[16/9]">
+              <Image
+                src={project.image}
+                alt={`${project.title} - Desktop`}
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
+              />
+            </div>
+            <div className="p-4 text-center text-sm text-[#a0b1c5]">
+              Desktop View
+            </div>
           </div>
-          <div className="p-4 text-center text-sm text-[#a0b1c5]">
-            Desktop View
+          
+          <div className="bg-[#111622]/80 rounded-lg overflow-hidden shadow-lg border border-[#2a3546]">
+            <div className="relative aspect-[16/9]">
+              <Image
+                src={project.mobileImage}
+                alt={`${project.title} - Mobile`}
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
+              />
+            </div>
+            <div className="p-4 text-center text-sm text-[#a0b1c5]">
+              Mobile View
+            </div>
           </div>
         </div>
-        
-        <div className="bg-[#111622]/80 rounded-lg overflow-hidden shadow-lg border border-[#2a3546]">
-          <div className="relative aspect-[16/9]">
-            <Image
-              src={project.mobileImage}
-              alt={`${project.title} - Mobile`}
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover"
-            />
-          </div>
-          <div className="p-4 text-center text-sm text-[#a0b1c5]">
-            Mobile View
-          </div>
-        </div>
-      </div>
+      )}
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
         <div className="lg:col-span-2">
