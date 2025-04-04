@@ -29,7 +29,7 @@ export default function PricingPage() {
         "Our Collaborative Process (Discovery, Wireframe Review, Development, Feedback Rounds, Launch)",
         "Figma Wireframes for Content Planning"
       ],
-      investment: "Starting from $1,500 - $3,500",
+      investment: "Starting from €300 - €2,000",
       timeline: "2-4 Weeks (dependent on content delivery & feedback)",
       icon: <ShoppingCart className="h-8 w-8 text-[#a0b1c5]" />,
       gradient: "from-[#a0b1c5] to-[#5d7b9c]",
@@ -49,7 +49,7 @@ export default function PricingPage() {
         "Enhanced On-Page SEO Setup",
         "(Optional: If using Framer): Visual progress tracking via Framer preview link during development"
       ],
-      investment: "Starting from $3,500 - $6,500",
+      investment: "Starting from €2,001 - €5,000",
       timeline: "4-8 Weeks (dependent on content delivery & feedback)",
       icon: <Briefcase className="h-8 w-8 text-[#97a8bc]" />,
       gradient: "from-[#97a8bc] to-[#5f7d9e]",
@@ -67,10 +67,29 @@ export default function PricingPage() {
         "Potentially more complex CMS requirements",
         "Deeper integration support"
       ],
-      investment: "Starting from $7,000+ (Highly variable based on specific features)",
+      investment: "Starting from €5,001 - €8,000",
       timeline: "8-12+ Weeks (dependent on complexity, content & feedback)",
       icon: <Rocket className="h-8 w-8 text-[#8fa0b4]" />,
       gradient: "from-[#8fa0b4] to-[#617f9f]",
+    },
+    {
+      name: "Premium Solution Package",
+      description: "Enterprise-Level Websites",
+      idealFor: "Large businesses needing complex systems, extensive customization, multiple integrations, or high-traffic e-commerce solutions.",
+      features: [
+        "Everything in the Advanced Solution Package PLUS:",
+        "Enterprise-level scalability",
+        "Multiple complex integrations",
+        "Advanced security features",
+        "Performance optimization for high traffic",
+        "Detailed analytics setup",
+        "Extended support period",
+        "Comprehensive documentation"
+      ],
+      investment: "Starting from €8,001 - €10,000",
+      timeline: "12-16+ Weeks (dependent on complexity, content & feedback)",
+      icon: <Zap className="h-8 w-8 text-[#8092a6]" />,
+      gradient: "from-[#8092a6] to-[#68839f]",
     }
   ]
 
