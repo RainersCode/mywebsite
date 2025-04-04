@@ -123,7 +123,7 @@ export default function PortfolioShowcase() {
   const timelineRef = useRef<any>(null);
   
   // Use a ref for the goToPanel function to avoid circular dependencies
-  const goPanelRef = useRef<(index: number) => void>();
+  const goPanelRef = useRef<(index: number) => void>(undefined!);
   
   // Touch handling state
   const [touchStart, setTouchStart] = useState<number | null>(null)
@@ -302,6 +302,29 @@ export default function PortfolioShowcase() {
     const viewportWidth = window.innerWidth;
     const panelCount = portfolioItems.length;
     
+    // For mobile, we'll use swipe only, no scroll-based animation
+    const isMobileView = window.innerWidth < 768;
+    
+    if (isMobileView) {
+      // Center the first panel on mobile
+      const firstPanel = track.children[0];
+      if (firstPanel) {
+        const panelWidth = firstPanel.getBoundingClientRect().width;
+        const centerOffset = Math.max(0, (viewportWidth - panelWidth) / 2);
+        
+        gsap.set(track, { 
+          paddingLeft: centerOffset,
+          paddingRight: centerOffset,
+        });
+      }
+      
+      // On mobile, we don't need the ScrollTrigger for horizontal scroll
+      // Just make sure active panel is set to 0
+      setActivePanel(0);
+      return;
+    }
+    
+    // Continue with desktop ScrollTrigger setup
     // Wait for layout to complete to get accurate measurements
     const initScrollTrigger = () => {
       if (!track || !track.children[0]) return;
@@ -325,11 +348,9 @@ export default function PortfolioShowcase() {
       const viewportHeight = window.innerHeight;
       const sectionHeight = Math.max(
         viewportHeight * 0.7, // Minimum height to maintain proportions
-        window.innerWidth < 768 
-          ? viewportHeight * 0.7 * panelCount // Mobile sizing (reduced)
-          : viewportHeight * 0.8 * panelCount // Desktop sizing
+        viewportHeight * 0.8 * panelCount // Desktop sizing
       );
-  
+
       // Create the ScrollTrigger animation
       timelineRef.current = gsap.timeline({
         scrollTrigger: {
@@ -384,7 +405,7 @@ export default function PortfolioShowcase() {
       
       // Store the ScrollTrigger instance for cleanup
       scrollTriggerRef.current = ScrollTrigger.getAll().pop();
-  
+
       // Animate the track position to create the horizontal scrolling effect
       timelineRef.current.to(track, {
         x: () => -(totalTrackWidth - viewportWidth),
@@ -397,6 +418,18 @@ export default function PortfolioShowcase() {
     
     // Make the animation responsive
     const resizeObserver = new ResizeObserver(() => {
+      // On resize, check if we crossed the mobile/desktop threshold
+      const wasMobile = isMobile;
+      const isMobileNow = window.innerWidth < 768;
+      
+      // If we switched between mobile and desktop, refresh the page
+      // This is a simple approach; a more complex one would re-initialize the component
+      if (wasMobile !== isMobileNow) {
+        window.location.reload();
+        return;
+      }
+      
+      // Otherwise just update ScrollTrigger
       if (scrollTriggerRef.current) {
         ScrollTrigger.update();
       }
@@ -468,7 +501,9 @@ export default function PortfolioShowcase() {
             onTouchMove={isMobile ? handleTouchMove : undefined}
             onTouchEnd={isMobile ? handleTouchEnd : undefined}
             style={{ 
-              willChange: isMobile ? 'transform' : 'auto'
+              willChange: isMobile ? 'transform' : 'auto',
+              transform: isMobile ? `translateX(${-100 * activePanel}%)` : undefined,
+              transition: isMobile ? 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)' : undefined
             }}
           >
             {portfolioItems.map((item, index) => (
@@ -479,43 +514,45 @@ export default function PortfolioShowcase() {
               />
             ))}
           </div>
+          
+          {/* Mobile navigation buttons - only inside the showcase section */}
+          {isMobile && (
+            <div className="flex gap-6 justify-center mt-6 pb-4">
+              <button 
+                onClick={() => activePanel > 0 && goToPanel(activePanel - 1)}
+                className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                  activePanel === 0 ? 'opacity-30 cursor-not-allowed' : 'bg-[#1c2534] opacity-70 hover:opacity-100'
+                }`}
+                disabled={activePanel === 0}
+                aria-label="Previous project"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
+              
+              <button 
+                onClick={() => activePanel < portfolioItems.length - 1 && goToPanel(activePanel + 1)}
+                className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                  activePanel === portfolioItems.length - 1 ? 'opacity-30 cursor-not-allowed' : 'bg-[#1c2534] opacity-70 hover:opacity-100'
+                }`}
+                disabled={activePanel === portfolioItems.length - 1}
+                aria-label="Next project"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Mobile navigation buttons for swiping alternative */}
-      {isMobile && (
-        <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 flex gap-10 text-center md:hidden z-[999]">
-          <button 
-            onClick={() => activePanel > 0 && goToPanel(activePanel - 1)}
-            className={`w-10 h-10 rounded-full flex items-center justify-center ${
-              activePanel === 0 ? 'opacity-30 cursor-not-allowed' : 'bg-[#1c2534] opacity-70 hover:opacity-100'
-            }`}
-            disabled={activePanel === 0}
-            aria-label="Previous project"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
-          
-          <button 
-            onClick={() => activePanel < portfolioItems.length - 1 && goToPanel(activePanel + 1)}
-            className={`w-10 h-10 rounded-full flex items-center justify-center ${
-              activePanel === portfolioItems.length - 1 ? 'opacity-30 cursor-not-allowed' : 'bg-[#1c2534] opacity-70 hover:opacity-100'
-            }`}
-            disabled={activePanel === portfolioItems.length - 1}
-            aria-label="Next project"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 18l6-6-6-6" />
-            </svg>
-          </button>
-        </div>
-      )}
+      {/* Remove the fixed position mobile navigation buttons - now placed inside the section */}
 
-      {/* Scroll hint for mobile - fixed position outside the section flow */}
-      {isMobile && !isFooterVisible && !isSwiping && (
-        <div className="fixed bottom-10 left-1/2 transform -translate-x-1/2 text-center md:hidden z-[999]">
+      {/* Scroll hint for mobile - only visible when ScrollTrigger is active (desktop) */}
+      {!isMobile && (
+        <div className="fixed bottom-10 left-1/2 transform -translate-x-1/2 text-center md:block hidden z-[999]">
           <div className="flex flex-col items-center">
             <motion.div 
               className="w-px h-16 bg-gradient-to-b from-transparent via-[#5d7b9c]/40 to-[#5d7b9c]/60"
