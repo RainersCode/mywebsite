@@ -11,6 +11,7 @@ import {
 } from "lucide-react"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
+import { ParticlesBackground } from "@/components/ui/particles-background"
 
 export default function PricingPage() {
   // Pricing packages
@@ -132,8 +133,9 @@ export default function PricingPage() {
       <Navbar />
       <main>
         {/* Hero Section */}
-        <section className="py-20 md:py-28 bg-gradient-to-b from-[#141b27] to-[#111622]">
-          <div className="container mx-auto px-6">
+        <section className="py-20 md:py-28 bg-gradient-to-b from-[#141b27] to-[#111622] relative overflow-hidden">
+          <ParticlesBackground visibility="reduced" />
+          <div className="container mx-auto px-6 relative z-30">
             <div className="text-center max-w-4xl mx-auto">
               <div className="inline-block px-4 py-1 mb-4 bg-[#1c2534] border border-[#2a3546] rounded-full relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-[#a0b1c5]/10 via-[#8faabe]/10 to-[#5d7b9c]/10" />

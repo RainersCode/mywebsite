@@ -6,6 +6,7 @@ import { CardSpotlight } from "@/components/ui/card-spotlight"
 import { MessageSquare, Paintbrush, Code, Rocket } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { ParticlesBackground } from "@/components/ui/particles-background"
 
 export default function ProcessSection() {
   const ref = useRef<HTMLDivElement>(null)
@@ -54,8 +55,9 @@ export default function ProcessSection() {
       ref={ref}
       className="py-24 md:py-32 bg-gradient-to-b from-[#141b27] to-[#0f1520] relative overflow-hidden"
     >
+      <ParticlesBackground visibility="reduced" />
       {/* Background Elements - Removed */}
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-6 relative z-30">
         <motion.div className="max-w-4xl mx-auto" style={{ y, opacity }}>
           <div className="text-center mb-16">
             <div className="inline-block px-4 py-1 mb-4 bg-[#1c2534] border border-[#2a3546] rounded-full relative overflow-hidden">

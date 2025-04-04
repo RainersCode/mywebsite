@@ -5,10 +5,8 @@ import { motion, useScroll, useTransform } from "framer-motion"
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
-import Particles from "react-tsparticles"
-import { loadSlim } from "tsparticles-slim"
-import type { Engine } from "tsparticles-engine"
 import { Button } from "@/components/ui/button"
+import { ParticlesBackground } from "@/components/ui/particles-background"
 
 // Updated showcase items with enhanced visual appearance
 const showcaseItems = [
@@ -377,144 +375,11 @@ export default function HeroSection() {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // Particles initialization
-  const particlesInit = useCallback(async (engine: Engine) => {
-    await loadSlim(engine)
-  }, [])
-
-  // Optimized particle settings for mobile
-  const particleOptions = isMobile ? 
-    {
-      fpsLimit: 30, // Lower FPS limit for mobile
-      interactivity: {
-        events: {
-          onHover: {
-            enable: false, // Disable hover interactions on mobile
-          },
-          resize: true,
-        },
-      },
-      particles: {
-        color: {
-          value: "#a0b1c5",
-        },
-        links: {
-          color: "#5d7b9c",
-          distance: 150,
-          enable: true,
-          opacity: 0.3,
-          width: 1,
-        },
-        move: {
-          enable: true,
-          speed: 0.5, // Slower movement on mobile
-          direction: "none" as const,
-          random: false,
-          straight: false,
-          outModes: {
-            default: "bounce" as const,
-          },
-        },
-        number: {
-          density: {
-            enable: true,
-            area: 1000, // Larger area = fewer particles
-          },
-          value: 30, // Far fewer particles on mobile
-        },
-        opacity: {
-          value: 0.3, // Lower opacity
-        },
-        shape: {
-          type: "circle" as const,
-        },
-        size: {
-          value: { min: 1, max: 2 }, // Smaller particles
-        },
-      },
-      detectRetina: false, // Disable retina detection for performance
-    } 
-    : 
-    {
-      // Desktop settings - already optimized
-      fpsLimit: 60,
-      interactivity: {
-        events: {
-          onHover: {
-            enable: true,
-            mode: "repulse" as const,
-          },
-          resize: true,
-        },
-        modes: {
-          repulse: {
-            distance: 100,
-            duration: 0.4,
-          },
-        },
-      },
-      particles: {
-        color: {
-          value: "#a0b1c5",
-        },
-        links: {
-          color: "#5d7b9c",
-          distance: 150,
-          enable: true,
-          opacity: 0.5,
-          width: 1,
-        },
-        move: {
-          enable: true,
-          direction: "none" as const,
-          outModes: {
-            default: "bounce" as const,
-          },
-          random: true,
-          speed: 1,
-          straight: false,
-        },
-        number: {
-          density: {
-            enable: true,
-            area: 800,
-          },
-          value: 80,
-        },
-        opacity: {
-          value: 0.5,
-        },
-        shape: {
-          type: "circle" as const,
-        },
-        size: {
-          value: { min: 1, max: 3 },
-        },
-      },
-      detectRetina: true,
-    };
-
   return (
     <section ref={ref} className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Enhanced dark starry background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 to-black z-0" />
+      {/* Use ParticlesBackground with enhanced visibility for home page */}
+      <ParticlesBackground visibility="enhanced" />
       
-      {/* Particles - shown on both desktop and mobile with different settings */}
-      <Particles
-        id="tsparticles"
-        className="absolute inset-0 z-10"
-        init={particlesInit}
-        options={particleOptions}
-      />
-      
-      {/* Mobile-only background pattern - removed since we're keeping particles */}
-      
-      {/* Subtle cosmic dust/nebula effect - simplified on mobile */}
-      <div className="absolute inset-0 opacity-30 z-5">
-        <div className="absolute top-1/4 -left-1/4 w-1/2 h-1/2 rounded-full bg-gradient-to-r from-[#a0b1c5]/20 to-transparent blur-[100px] transform rotate-12" />
-        <div className="absolute bottom-1/4 -right-1/4 w-1/2 h-1/2 rounded-full bg-gradient-to-r from-[#5d7b9c]/20 to-transparent blur-[100px] transform -rotate-12" />
-      </div>
-
       {/* Parallax Background - only apply motion effects on desktop */}
       {isMobile ? (
         <div className="absolute inset-0 z-5">
@@ -527,12 +392,6 @@ export default function HeroSection() {
           <div className="absolute inset-0 bg-gradient-to-tr from-[#a0b1c5]/10 via-transparent to-[#5d7b9c]/10 z-10" />
         </motion.div>
       )}
-
-      {/* Background Grid */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[#0f1520] opacity-90"></div>
-        <div className="absolute inset-0 bg-grid-[#a0b1c5]/[0.02]"></div>
-      </div>
 
       {/* Content */}
       <div className="container mx-auto px-6 relative z-30">

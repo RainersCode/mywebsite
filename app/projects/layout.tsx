@@ -1,5 +1,4 @@
 import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
 
 export const metadata = {
   title: 'Project Details - WebDeco',
@@ -17,7 +16,6 @@ export default function ProjectLayout({
       <main className="pt-20">
         {children}
       </main>
-      <Footer />
     </div>
   )
 } 

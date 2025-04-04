@@ -4,6 +4,8 @@ import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft } from "lucide-react"
 import LaptopAnimation from "@/components/laptop-animation"
+import Footer from "@/components/footer"
+import { ParticlesBackground } from "@/components/ui/particles-background"
 
 // Portfolio items with extended content for detail pages
 const portfolioItems = [
@@ -148,125 +150,177 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
   }
   
   return (
-    <div className="container mx-auto px-6 py-12">
-      <div className="mb-8">
-        <Button
-          asChild
-          variant="ghost"
-          size="sm"
-          className="text-[#a0b1c5] hover:text-white mb-4"
-        >
-          <Link href="/projects" className="flex items-center">
-            <ChevronLeft className="w-4 h-4 mr-1" />
-            Back to Projects
-          </Link>
-        </Button>
-        
-        <div className="text-center md:text-left mb-8">
-          <div className="inline-block px-4 py-1 mb-2 bg-[#1c2534] rounded-full relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-[#a0b1c5]/10 via-[#8faabe]/10 to-[#5d7b9c]/10" />
-            <span className="relative text-[#c6d4e3] text-sm uppercase tracking-widest">Project Details</span>
-          </div>
-          <h1 className="font-serif text-3xl md:text-4xl mb-4">{project.title}</h1>
-        </div>
-      </div>
-      
-      {params.slug === "responsive-ecommerce" || params.slug === "creative-portfolio" || params.slug === "corporate-website" || params.slug === "e-learning-platform" ? (
-        <div className="mb-12">
-          <LaptopAnimation 
-            desktopImage={project.image}
-            mobileImage={project.mobileImage}
-          />
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          <div className="bg-[#111622]/80 rounded-lg overflow-hidden shadow-lg border border-[#2a3546]">
-            <div className="relative aspect-[16/9]">
-              <Image
-                src={project.image}
-                alt={`${project.title} - Desktop`}
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
-              />
-            </div>
-            <div className="p-4 text-center text-sm text-[#a0b1c5]">
-              Desktop View
+    <div className="min-h-screen bg-[#141b27] text-zinc-100">
+      <main>
+        {/* Hero Section */}
+        <section className="py-20 md:py-28 bg-gradient-to-b from-[#141b27] to-[#111622] relative overflow-hidden">
+          <ParticlesBackground visibility="reduced" />
+          <div className="container mx-auto px-6 relative z-30">
+            <div className="mb-8">
+              <Button
+                asChild
+                variant="ghost"
+                size="sm"
+                className="text-[#a0b1c5] hover:text-white mb-4"
+              >
+                <Link href="/projects" className="flex items-center">
+                  <ChevronLeft className="w-4 h-4 mr-1" />
+                  Back to Projects
+                </Link>
+              </Button>
+              
+              <div className="text-center md:text-left mb-8">
+                <div className="inline-block px-4 py-1 mb-4 bg-[#1c2534] border border-[#2a3546] rounded-full relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#a0b1c5]/10 via-[#8faabe]/10 to-[#5d7b9c]/10" />
+                  <span className="relative text-[#c6d4e3] text-sm uppercase tracking-widest">Project Details</span>
+                </div>
+                <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-6">{project.title}</h1>
+                <p className="text-[#a0b1c5] text-lg md:text-xl max-w-3xl mx-auto md:mx-0">
+                  {project.description}
+                </p>
+              </div>
             </div>
           </div>
-          
-          <div className="bg-[#111622]/80 rounded-lg overflow-hidden shadow-lg border border-[#2a3546]">
-            <div className="relative aspect-[16/9]">
-              <Image
-                src={project.mobileImage}
-                alt={`${project.title} - Mobile`}
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
-              />
+        </section>
+
+        {/* Project Content Section */}
+        <section className="py-16 md:py-24 bg-gradient-to-b from-[#111622] to-[#0f1520]">
+          <div className="container mx-auto px-6">
+            {/* Project Preview - Image Display */}
+            <div className="mb-16">
+              {params.slug === "responsive-ecommerce" || params.slug === "creative-portfolio" || params.slug === "corporate-website" || params.slug === "e-learning-platform" ? (
+                <div className="rounded-2xl overflow-hidden shadow-xl">
+                  <LaptopAnimation 
+                    desktopImage={project.image}
+                    mobileImage={project.mobileImage}
+                  />
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="bg-[#111622]/80 rounded-xl overflow-hidden shadow-xl border border-[#2a3546] transform md:hover:scale-[1.02] transition-transform duration-300">
+                    <div className="relative aspect-[16/9]">
+                      <Image
+                        src={project.image}
+                        alt={`${project.title} - Desktop`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="p-4 text-center text-sm text-[#a0b1c5] bg-[#141b27]/50 backdrop-blur-sm">
+                      Desktop View
+                    </div>
+                  </div>
+                  
+                  <div className="bg-[#111622]/80 rounded-xl overflow-hidden shadow-xl border border-[#2a3546] transform md:hover:scale-[1.02] transition-transform duration-300">
+                    <div className="relative aspect-[16/9]">
+                      <Image
+                        src={project.mobileImage}
+                        alt={`${project.title} - Mobile`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="p-4 text-center text-sm text-[#a0b1c5] bg-[#141b27]/50 backdrop-blur-sm">
+                      Mobile View
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-            <div className="p-4 text-center text-sm text-[#a0b1c5]">
-              Mobile View
-            </div>
-          </div>
-        </div>
-      )}
-      
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-        <div className="lg:col-span-2">
-          <div className="bg-[#111622]/80 rounded-lg p-6 shadow-lg border border-[#2a3546] h-full">
-            <h2 className="font-serif text-xl mb-4">Project Overview</h2>
-            <p className="text-[#a0b1c5] mb-6">{project.fullDescription}</p>
             
-            <h3 className="font-serif text-lg mb-3">The Challenge</h3>
-            <p className="text-[#a0b1c5] mb-6">{project.challenge}</p>
+            {/* Project Overview */}
+            <div className="bg-[#141b27]/40 backdrop-blur-sm border border-[#2a3546] rounded-xl p-8 mb-16 shadow-xl">
+              <h2 className="font-serif text-2xl md:text-3xl mb-6 text-white relative inline-block">
+                Project Overview
+                <div className="absolute -bottom-2 left-0 w-1/2 h-1 bg-gradient-to-r from-[#a0b1c5] to-transparent rounded-full"></div>
+              </h2>
+              <p className="text-[#a0b1c5] mb-8 text-lg leading-relaxed">{project.fullDescription}</p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12">
+                <div className="bg-[#111622]/50 p-6 rounded-lg border border-[#2a3546]/50">
+                  <h3 className="font-serif text-xl mb-4 text-[#c6d4e3]">The Challenge</h3>
+                  <p className="text-[#a0b1c5]">{project.challenge}</p>
+                </div>
+                <div className="bg-[#111622]/50 p-6 rounded-lg border border-[#2a3546]/50">
+                  <h3 className="font-serif text-xl mb-4 text-[#c6d4e3]">Our Solution</h3>
+                  <p className="text-[#a0b1c5]">{project.solution}</p>
+                </div>
+              </div>
+            </div>
             
-            <h3 className="font-serif text-lg mb-3">Our Solution</h3>
-            <p className="text-[#a0b1c5]">{project.solution}</p>
-          </div>
-        </div>
-        
-        <div>
-          <div className="bg-[#111622]/80 rounded-lg p-6 shadow-lg border border-[#2a3546] mb-8">
-            <h2 className="font-serif text-xl mb-4">Key Features</h2>
-            <ul className="text-[#a0b1c5] space-y-2">
-              {project.features.map((feature, index) => (
-                <li key={index} className="flex items-start">
-                  <span className="inline-block w-1.5 h-1.5 bg-[#5d7b9c] rounded-full mt-2 mr-2"></span>
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          
-          <div className="bg-[#111622]/80 rounded-lg p-6 shadow-lg border border-[#2a3546]">
-            <h2 className="font-serif text-xl mb-4">Technologies Used</h2>
-            <div className="flex flex-wrap gap-2">
-              {project.technologies.map((tech, index) => (
-                <span 
-                  key={index}
-                  className="inline-block px-3 py-1 bg-[#1c2534] rounded-full text-sm text-[#c6d4e3]"
+            {/* Features and Technologies in Two Columns */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+              {/* Features Card */}
+              <div className="bg-[#141b27]/40 backdrop-blur-sm border border-[#2a3546] rounded-xl p-8 shadow-xl h-full">
+                <h2 className="font-serif text-2xl md:text-3xl mb-6 text-white relative inline-block">
+                  Key Features
+                  <div className="absolute -bottom-2 left-0 w-1/2 h-1 bg-gradient-to-r from-[#a0b1c5] to-transparent rounded-full"></div>
+                </h2>
+                <ul className="space-y-4 text-[#a0b1c5]">
+                  {project.features.map((feature, index) => (
+                    <li key={index} className="flex items-start group">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-r from-[#1c2534] to-[#2a3546] flex items-center justify-center mt-0.5 mr-3 group-hover:from-[#5d7b9c] group-hover:to-[#8faabe] transition-colors duration-300">
+                        <span className="text-[#a0b1c5] text-xs group-hover:text-white transition-colors duration-300">{index + 1}</span>
+                      </span>
+                      <span className="group-hover:text-white transition-colors duration-300">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              {/* Technologies Card */}
+              <div className="bg-[#141b27]/40 backdrop-blur-sm border border-[#2a3546] rounded-xl p-8 shadow-xl h-full">
+                <h2 className="font-serif text-2xl md:text-3xl mb-6 text-white relative inline-block">
+                  Technologies
+                  <div className="absolute -bottom-2 left-0 w-1/2 h-1 bg-gradient-to-r from-[#a0b1c5] to-transparent rounded-full"></div>
+                </h2>
+                <div className="flex flex-wrap gap-3">
+                  {project.technologies.map((tech, index) => (
+                    <span 
+                      key={index} 
+                      className="px-4 py-2 bg-gradient-to-r from-[#1c2534] to-[#2a3546] rounded-full text-[#c6d4e3] border border-[#4d5f79]/30 hover:border-[#a0b1c5]/30 transition-colors duration-300 hover:from-[#1f2a3c] hover:to-[#15202f] hover:text-white"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            {/* Call to Action */}
+            <div className="mt-16 text-center">
+              <p className="text-[#a0b1c5] mb-6 max-w-2xl mx-auto">
+                Interested in discussing your own project? We'd love to hear about your ideas and how we can help bring them to life.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Button
+                  asChild
+                  variant="nav"
+                  size="lg"
+                  className="px-8"
                 >
-                  {tech}
-                </span>
-              ))}
+                  <Link href="/projects">
+                    View More Projects
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="nav"
+                  size="lg"
+                  className="px-8 bg-gradient-to-r from-[#141b27] to-[#1c2534] border-[#4d5f79] hover:border-[#a0b1c5] hover:bg-gradient-to-r hover:from-[#15202f] hover:to-[#1f2a3c]"
+                >
+                  <Link href="/project-kickoff">
+                    Start Your Project
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      
-      <div className="text-center mt-12">
-        <Button
-          asChild
-          variant="nav"
-          size="lg"
-          className="bg-gradient-to-r from-[#141b27] to-[#1c2534] border-[#4d5f79] hover:border-[#a0b1c5] hover:bg-gradient-to-r hover:from-[#15202f] hover:to-[#1f2a3c]"
-        >
-          <Link href="/#contact">
-            Start Your Project
-          </Link>
-        </Button>
-      </div>
+        </section>
+      </main>
+      <Footer />
     </div>
   )
 } 
