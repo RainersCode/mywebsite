@@ -105,16 +105,28 @@ export default function ProcessSection() {
               <p className="text-[#a0b1c5] text-lg mb-8">
                 Ready to take the first step? Let's discuss your project!
               </p>
-              <Button
-                asChild
-                variant="nav"
-                size="lg"
-                className="bg-gradient-to-r from-[#141b27] to-[#1c2534] border-[#4d5f79] hover:border-[#a0b1c5] hover:bg-gradient-to-r hover:from-[#15202f] hover:to-[#1f2a3c]"
-              >
-                <Link href="#contact">
-                  Get Started
-                </Link>
-              </Button>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Button
+                  asChild
+                  variant="nav"
+                  size="lg"
+                  className="bg-gradient-to-r from-[#141b27] to-[#1c2534] border-[#4d5f79] hover:border-[#a0b1c5] hover:bg-gradient-to-r hover:from-[#15202f] hover:to-[#1f2a3c]"
+                >
+                  <Link href="#contact">
+                    Get Started
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="border-[#2a3546] text-[#a0b1c5] hover:text-white hover:border-[#4d5f79]"
+                >
+                  <Link href="/process">
+                    Learn More About Our Process
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
         </motion.div>

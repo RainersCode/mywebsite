@@ -39,9 +39,14 @@ export default function Navbar() {
       description: "Solutions we provide" 
     },
     { 
-      href: "#process", 
+      href: "/process", 
       label: "PROCESS", 
       description: "How we work" 
+    },
+    { 
+      href: "/pricing", 
+      label: "PRICING", 
+      description: "Package options" 
     },
     { 
       href: "/projects", 
@@ -131,8 +136,11 @@ export default function Navbar() {
           <Link href="#services" className="text-sm tracking-wide text-[#c6d4e3] hover:text-white transition-colors">
             SERVICES
           </Link>
-          <Link href="#process" className="text-sm tracking-wide text-[#c6d4e3] hover:text-white transition-colors">
+          <Link href="/process" className="text-sm tracking-wide text-[#c6d4e3] hover:text-white transition-colors">
             PROCESS
+          </Link>
+          <Link href="/pricing" className="text-sm tracking-wide text-[#c6d4e3] hover:text-white transition-colors">
+            PRICING
           </Link>
           <Link href="/projects" className="text-sm tracking-wide text-[#c6d4e3] hover:text-white transition-colors">
             PROJECTS
