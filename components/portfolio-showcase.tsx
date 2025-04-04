@@ -52,6 +52,8 @@ export default function PortfolioShowcase() {
 
   // Detect if we're on mobile for different animation settings
   const [isMobile, setIsMobile] = useState(false)
+  // Track if footer is visible to hide scroll indicator
+  const [isFooterVisible, setIsFooterVisible] = useState(false)
   
   useEffect(() => {
     // Check if we're on mobile
@@ -68,6 +70,33 @@ export default function PortfolioShowcase() {
     // Cleanup
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
+
+  // Set up intersection observer for footer
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    
+    // Get footer element
+    const footer = document.getElementById('footer') || document.querySelector('footer');
+    if (!footer) return;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Update state when footer visibility changes
+        entries.forEach(entry => {
+          setIsFooterVisible(entry.isIntersecting);
+        });
+      },
+      { threshold: 0.1 } // Trigger when at least 10% of the footer is visible
+    );
+    
+    // Start observing the footer
+    observer.observe(footer);
+    
+    // Cleanup observer on unmount
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   // Reduce movement on mobile
   const y = useTransform(
@@ -310,14 +339,45 @@ export default function PortfolioShowcase() {
       </section>
 
       {/* Scroll hint for mobile - fixed position outside the section flow */}
-      {isMobile && (
+      {isMobile && !isFooterVisible && (
         <div className="fixed bottom-10 left-1/2 transform -translate-x-1/2 text-center md:hidden z-[999]">
-          <div className="text-center w-6 h-6 rounded-full bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] mx-auto flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
-              <path d="M12 5v14M5 12l7 7 7-7"/>
-            </svg>
+          <div className="flex flex-col items-center">
+            <motion.div 
+              className="w-px h-16 bg-gradient-to-b from-transparent via-[#5d7b9c]/40 to-[#5d7b9c]/60"
+              animate={{ 
+                height: ["60px", "70px", "60px"],
+                opacity: [0.6, 1, 0.6] 
+              }}
+              transition={{ 
+                duration: 2, 
+                repeat: Infinity,
+                repeatType: "mirror"
+              }}
+            />
+            <motion.p 
+              className="text-xs tracking-widest text-[#5d7b9c] mt-1"
+              animate={{ 
+                opacity: [0.7, 1, 0.4, 1, 0.7],
+                y: [0, -3, 0, -3, 0],
+                scale: [1, 1.1, 1, 1.1, 1],
+                textShadow: [
+                  "0 0 0px rgba(93,123,156,0)",
+                  "0 0 8px rgba(93,123,156,0.7)",
+                  "0 0 2px rgba(93,123,156,0.3)",
+                  "0 0 8px rgba(93,123,156,0.7)",
+                  "0 0 0px rgba(93,123,156,0)"
+                ]
+              }}
+              transition={{ 
+                duration: 3, 
+                repeat: Infinity, 
+                repeatType: "loop",
+                ease: "easeInOut"
+              }}
+            >
+              SCROLL
+            </motion.p>
           </div>
-          <p className="bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] bg-clip-text text-transparent text-xs mt-2 tracking-widest">SCROLL</p>
         </div>
       )}
     </>

@@ -606,32 +606,6 @@ export default function HeroSection() {
           </motion.div>
         )}
       </div>
-
-      {/* Scroll Indicator - simplified on mobile */}
-      {isMobile ? (
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">
-          <div className="text-center w-6 h-6 rounded-full bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] mx-auto flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
-              <path d="M12 5v14M5 12l7 7 7-7"/>
-            </svg>
-          </div>
-          <p className="bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] bg-clip-text text-transparent text-xs mt-2 tracking-widest">SCROLL</p>
-        </div>
-      ) : (
-        <motion.div
-          className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Number.POSITIVE_INFINITY, duration: 2 }}
-          style={{ opacity }}
-        >
-          <div className="text-center w-6 h-6 rounded-full bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] mx-auto flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
-              <path d="M12 5v14M5 12l7 7 7-7"/>
-            </svg>
-          </div>
-          <p className="bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] bg-clip-text text-transparent text-xs mt-2 tracking-widest">SCROLL</p>
-        </motion.div>
-      )}
     </section>
   )
 }

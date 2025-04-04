@@ -58,3 +58,11 @@
   }
 }
 
+/* Vertical text for scroll indicator */
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 0.2em;
+  font-size: 0.6rem;
+}
+
