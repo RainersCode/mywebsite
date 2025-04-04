@@ -42,40 +42,93 @@ const portfolioItems = [
   {
     id: 2,
     slug: "creative-portfolio",
-    title: "Creative Portfolio",
-    description: "Showcase of creative work with fluid animations and responsive layouts.",
+    title: "Fitness Trainer Website",
+    description: "Modern, responsive personal training website with online booking system.",
     image: "/responsivedg/resdesk2.png",
     mobileImage: "/responsivedg/respho2.png",
-    fullDescription: "This creative portfolio website was designed to showcase artistic work with an emphasis on visual impact and smooth animations. The responsive design ensures that images and galleries display beautifully on any device, with special attention to maintaining the visual integrity of the portfolio pieces.",
+    fullDescription: "This project features a sleek, modern website for fitness trainer Sindija Turka, designed to showcase her training programs and personal brand. The site combines striking visuals with functional elements that allow clients to learn about her approach, browse available programs, and book training sessions online. Built with Framer, the site offers a fully responsive experience with animated transitions and smooth interactions across all devices.",
     features: [
-      "Responsive image galleries that adapt to screen size",
-      "Animation effects that scale appropriately for different devices",
-      "Touch-friendly navigation for mobile users",
-      "Optimized asset loading for faster mobile performance",
-      "Accessibility considerations across all breakpoints"
+      "Professional Biography Section: Engaging 'About Me' presentation with personal training philosophy",
+      "Training Program Showcase: Visual display of various personal training offerings with pricing",
+      "Client Testimonials: Dynamic testimonial section displaying real client feedback",
+      "FAQ Accordion: Interactive frequently asked questions to address common client inquiries",
+      "Online Booking System: Integrated registration form for new clients to schedule sessions",
+      "Social Media Integration: Seamless connections to trainer's social media profiles",
+      "Responsive Design: Fully adaptive layout for optimal viewing on all devices"
     ],
-    technologies: ["Next.js", "Framer Motion", "GSAP", "Responsive Images", "CSS Grid"],
-    challenge: "Creating animations and transitions that work well across different device capabilities while ensuring the portfolio pieces remain the focus of attention.",
-    solution: "We implemented device-specific animation variations that deliver the appropriate level of visual complexity based on screen size and processing power, ensuring smooth performance everywhere."
+    technologies: [
+      "Framer",
+      "React",
+      "Responsive Design",
+      "CSS Animations",
+      "Form Handling",
+      "Social Media API",
+      "Mobile-First Design",
+      "Custom Typography"
+    ],
+    challenge: "The primary challenge was creating a visually striking website that effectively presents the trainer's unique personality and expertise while providing practical functionality for program information and booking. The site needed to appeal to potential clients through compelling visuals while maintaining excellent performance across all devices and offering clear pathways to conversion.",
+    solution: "We developed a custom website using Framer that balances bold visuals with intuitive navigation. The dark theme with burgundy accents creates a distinctive brand presence, while the responsive design ensures a seamless experience on desktop and mobile devices. The site structure prioritizes client engagement, placing testimonials and program offerings prominently to build trust and facilitate conversion. The online booking system streamlines the client onboarding process."
   },
   {
     id: 3,
     slug: "corporate-website",
-    title: "Corporate Website",
-    description: "Professional business site optimized for desktop, tablet, and mobile viewing.",
+    title: "Agricultural Export Consultancy",
+    description: "Professional website for livestock export consultancy with service showcase and contact system.",
     image: "/responsivedg/resdesk3.png",
     mobileImage: "/responsivedg/respho3.png",
-    fullDescription: "This corporate website project demonstrates how professional business content can be presented effectively across all devices. We focused on creating a clean, authoritative design that maintains brand consistency while adapting to different screen sizes and contexts.",
+    fullDescription: "This project features a comprehensive website for SIA 'Eksporta konsultācijas', a leading livestock export consultancy in Latvia. The site serves as both an informational platform and a service catalog, helping farmers and agricultural businesses access export consulting services. The design incorporates vibrant green branding with professional imagery of livestock to create an agricultural-focused web presence that inspires trust while effectively communicating the company's expertise in the field.",
     features: [
-      "Responsive navigation systems that transform for mobile",
-      "Content hierarchies that adjust based on screen size",
-      "Interactive elements that work with both touch and mouse inputs",
-      "Performance optimizations for corporate users on various networks",
-      "Print stylesheets for important business content"
+      "Hero Section: Prominent company introduction with professional livestock imagery",
+      "Service Catalog: Detailed presentation of livestock purchase and transportation services",
+      "Client Testimonials: Featured feedback from satisfied agricultural clients",
+      "News & Updates: Section showcasing industry events and company announcements",
+      "Contact Form: Integrated inquiry system for potential clients to request consultations",
+      "Service Icons: Visual representations of different service categories for easy navigation",
+      "Responsive Design: Fully adaptive layout for agricultural clients using various devices"
     ],
-    technologies: ["Next.js", "Tailwind CSS", "Responsive Typography", "SVG Icons", "CSS Grid"],
-    challenge: "Balancing comprehensive corporate content needs with mobile usability while maintaining a professional aesthetic across all device sizes.",
-    solution: "We implemented context-aware content prioritization that intelligently adjusts information density based on screen size, ensuring the most important business information is always accessible."
+    technologies: [
+      "Framer",
+      "React",
+      "Responsive Design",
+      "Contact Form Integration",
+      "Custom Icons",
+      "Content Management System",
+      "Mobile Optimization",
+      "SEO for Agricultural Sector"
+    ],
+    challenge: "The main challenge was creating a professional digital presence for an agricultural business that traditionally operates in a more analog environment. The website needed to present complex export services and regulations in an accessible way to farmers who may not be tech-savvy, while still projecting expertise and trustworthiness in the livestock export field.",
+    solution: "We developed a clean, intuitive website with a strong visual identity using the bright green brand color that resonates with the agricultural sector. The information architecture was carefully structured to highlight different service categories with clear visual indicators and simple navigation paths. We incorporated genuine livestock imagery throughout the site to create authentic connections with the target audience of farmers and agricultural businesses."
+  },
+  {
+    id: 4,
+    slug: "e-learning-platform",
+    title: "Digital Agency Portfolio",
+    description: "Modern dark-themed developer portfolio with interactive particle background and clean UI.",
+    image: "/responsivedg/respdesk4.png",
+    mobileImage: "/responsivedg/respho4.png",
+    fullDescription: "This project showcases a sophisticated digital agency website with a dark space-inspired theme featuring interactive particle backgrounds. The site is designed to highlight the agency's development capabilities and project portfolio with a focus on high-performance, visually striking experiences. The minimalist interface uses subtle animations and a strategic information hierarchy to guide potential clients through the agency's service offerings and collaborative process.",
+    features: [
+      "Interactive Particle Background: Dynamic animated constellation effect that responds to user interaction",
+      "Service Showcase: Visual representation of core service offerings with hover effects",
+      "Project Portfolio Gallery: Showcasing client work with detailed case studies",
+      "Collaborative Process Timeline: Step-by-step visualization of the development workflow",
+      "Client Testimonials: Featured feedback from previous clients with elegant transitions",
+      "Contact Form Integration: Custom-designed inquiry system with validation",
+      "Fully Responsive Design: Optimized experience from desktop to mobile devices"
+    ],
+    technologies: [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "Framer Motion",
+      "Three.js for Particle Effects",
+      "CSS Grid & Flexbox",
+      "GSAP Animations",
+      "Responsive Design",
+      "Contact Form Integration"
+    ],
+    challenge: "The main challenge was creating a portfolio website that effectively communicates technical expertise while maintaining an engaging visual experience. The site needed to balance sophisticated animations and interactive elements with fast load times and performance, while effectively showcasing the agency's capabilities and previous work in a compelling way.",
+    solution: "We developed a striking design centered around a space-themed particle animation that creates visual interest without compromising performance. The information architecture guides visitors from service offerings through the collaborative process to completed projects, building credibility at each step. Custom animations and transitions were optimized for performance, ensuring the interactive elements enhance rather than detract from the user experience."
   }
 ];
 
@@ -118,7 +171,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
         </div>
       </div>
       
-      {params.slug === "responsive-ecommerce" ? (
+      {params.slug === "responsive-ecommerce" || params.slug === "creative-portfolio" || params.slug === "corporate-website" || params.slug === "e-learning-platform" ? (
         <div className="mb-12">
           <LaptopAnimation 
             desktopImage={project.image}

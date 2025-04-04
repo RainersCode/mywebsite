@@ -18,27 +18,35 @@ if (typeof window !== "undefined") {
 const portfolioItems = [
   {
     id: 1,
-    title: "Responsive E-Commerce",
-    description: "Adaptive design with seamless shopping experience across all devices.",
+    title: "Rugby Club Website & Admin Portal",
+    description: "Comprehensive website for a rugby club with public content and secure admin portal.",
     image: "/responsivedg/resdesk1.png",
     mobileImage: "/responsivedg/respho1.png",
     slug: "responsive-ecommerce"
   },
   {
     id: 2,
-    title: "Creative Portfolio",
-    description: "Showcase of creative work with fluid animations and responsive layouts.",
+    title: "Fitness Trainer Website",
+    description: "Modern, responsive personal training website with online booking system.",
     image: "/responsivedg/resdesk2.png",
     mobileImage: "/responsivedg/respho2.png",
     slug: "creative-portfolio"
   },
   {
     id: 3,
-    title: "Corporate Website",
-    description: "Professional business site optimized for desktop, tablet, and mobile viewing.",
+    title: "Agricultural Export Consultancy",
+    description: "Professional website for livestock export consultancy with service showcase and contact system.",
     image: "/responsivedg/resdesk3.png",
     mobileImage: "/responsivedg/respho3.png",
     slug: "corporate-website"
+  },
+  {
+    id: 4,
+    title: "Digital Agency Portfolio",
+    description: "Modern dark-themed developer portfolio with interactive particle background and clean UI.",
+    image: "/responsivedg/respdesk4.png",
+    mobileImage: "/responsivedg/respho4.png",
+    slug: "e-learning-platform"
   }
 ];
 
@@ -192,9 +200,12 @@ export default function PortfolioShowcase() {
             } else if (progress < segmentSize * 2) {
               // Second panel
               setActivePanel(1);
-            } else {
-              // Last panel
+            } else if (progress < segmentSize * 3) {
+              // Third panel
               setActivePanel(2);
+            } else {
+              // Fourth panel
+              setActivePanel(3);
             }
           },
           onEnter: () => {

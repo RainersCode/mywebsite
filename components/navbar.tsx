@@ -49,6 +49,11 @@ export default function Navbar() {
       description: "How we work" 
     },
     { 
+      href: "/projects", 
+      label: "PROJECTS", 
+      description: "Browse our projects" 
+    },
+    { 
       href: "#contact", 
       label: "CONTACT", 
       description: "Get in touch" 
@@ -136,6 +141,9 @@ export default function Navbar() {
           </Link>
           <Link href="#process" className="text-sm tracking-wide text-[#c6d4e3] hover:text-white transition-colors">
             PROCESS
+          </Link>
+          <Link href="/projects" className="text-sm tracking-wide text-[#c6d4e3] hover:text-white transition-colors">
+            PROJECTS
           </Link>
           <Link
             href="#contact"
