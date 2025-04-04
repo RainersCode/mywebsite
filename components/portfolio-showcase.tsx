@@ -1,21 +1,84 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback, memo } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import LaptopAnimation from "./laptop-animation"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { ScrollToPlugin } from "gsap/ScrollToPlugin"
 import { CardSpotlight } from "@/components/ui/card-spotlight"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
 // Register the ScrollTrigger plugin
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 }
 
+// Define the type for a portfolio item
+type PortfolioItem = {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  mobileImage: string;
+  slug: string;
+};
+
+// Memoize the portfolio item component to prevent unnecessary re-renders
+const PortfolioItemComponent = memo(({ 
+  item, 
+  isActive 
+}: { 
+  item: PortfolioItem, 
+  isActive: boolean 
+}) => {
+  return (
+    <div 
+      className={`shrink-0 w-[85vw] sm:w-[80vw] md:w-[70vw] lg:w-[55vw] transition-all duration-500 ${
+        isActive 
+          ? "scale-100 opacity-100 transform-gpu" 
+          : "scale-[0.85] opacity-30 blur-[1px]"
+      }`}
+      style={{
+        zIndex: isActive ? 10 : 0,
+        transition: "all 0.5s ease-out",
+        willChange: 'transform, opacity' // Hint to browser for optimization
+      }}
+    >
+      <CardSpotlight
+        className="bg-[#111622]/80 rounded-lg overflow-hidden shadow-lg border border-[#2a3546] no-hover"
+        radius={450}
+        color="#2a3546"
+      >
+        <div className="aspect-[16/12] sm:aspect-[16/10] md:aspect-[16/7] relative bg-[#0f1520]">
+          <LaptopAnimation 
+            desktopImage={item.image}
+            mobileImage={item.mobileImage}
+          />
+        </div>
+        <div className="p-2 md:p-4">
+          <h3 className="text-base md:text-xl font-semibold text-white mb-0.5 md:mb-1">{item.title}</h3>
+          <p className="text-[#a0b1c5] text-xs md:text-base max-w-lg">{item.description}</p>
+          <Button
+            variant="nav"
+            size="sm"
+            className="mt-1 md:mt-2"
+            asChild
+          >
+            <Link href={`/projects/${item.slug}`}>
+              View Project
+            </Link>
+          </Button>
+        </div>
+      </CardSpotlight>
+    </div>
+  );
+});
+PortfolioItemComponent.displayName = 'PortfolioItemComponent';
+
 // Portfolio items
-const portfolioItems = [
+const portfolioItems: PortfolioItem[] = [
   {
     id: 1,
     title: "Rugby Club Website & Admin Portal",
@@ -55,6 +118,20 @@ export default function PortfolioShowcase() {
   const trackRef = useRef<HTMLDivElement>(null)
   const [activePanel, setActivePanel] = useState(0)
   
+  // Store ScrollTrigger instance in a ref to avoid recreating it on re-renders
+  const scrollTriggerRef = useRef<any>(null);
+  const timelineRef = useRef<any>(null);
+  
+  // Use a ref for the goToPanel function to avoid circular dependencies
+  const goPanelRef = useRef<(index: number) => void>();
+  
+  // Touch handling state
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd] = useState<number | null>(null)
+  const [isSwiping, setIsSwiping] = useState(false)
+  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null)
+  const [swipeDistance, setSwipeDistance] = useState(0)
+  
   // For title animation
   const titleRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
@@ -66,6 +143,92 @@ export default function PortfolioShowcase() {
   const [isMobile, setIsMobile] = useState(false)
   // Track if footer is visible to hide scroll indicator
   const [isFooterVisible, setIsFooterVisible] = useState(false)
+  
+  // Function to navigate to a specific panel with useCallback
+  const goToPanel = useCallback((index: number) => {
+    if (index < 0 || index >= portfolioItems.length) return
+    
+    setActivePanel(index)
+    
+    // Calculate the appropriate scroll position for the panel
+    if (scrollTriggerRef.current) {
+      const scrollInstance = scrollTriggerRef.current
+      const panelCount = portfolioItems.length
+      const segmentSize = 1 / panelCount
+      
+      // Calculate target progress (center of the panel's segment)
+      const targetProgress = segmentSize * index + (segmentSize / 2)
+      
+      // Convert progress to scroll position
+      const scrollPositionPx = scrollInstance.start + 
+        (scrollInstance.end - scrollInstance.start) * targetProgress
+      
+      // Animate to that scroll position
+      gsap.to(window, {
+        scrollTo: { y: scrollPositionPx },
+        duration: 0.5,
+        ease: "power2.out"
+      })
+    }
+  }, []);
+  
+  // Update the ref whenever goToPanel changes
+  useEffect(() => {
+    goPanelRef.current = goToPanel;
+  }, [goToPanel]);
+  
+  // Optimize event handlers with useCallback
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX)
+    setIsSwiping(true)
+    setSwipeDirection(null)
+    setSwipeDistance(0)
+  }, []);
+  
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (touchStart) {
+      const currentTouch = e.targetTouches[0].clientX
+      setTouchEnd(currentTouch)
+      
+      const distance = touchStart - currentTouch
+      setSwipeDistance(Math.abs(distance))
+      
+      if (distance > 10) {
+        setSwipeDirection('left')
+      } else if (distance < -10) {
+        setSwipeDirection('right')
+      } else {
+        setSwipeDirection(null)
+      }
+    }
+  }, [touchStart]);
+  
+  const handleTouchEnd = useCallback(() => {
+    if (!touchStart || !touchEnd) return
+    
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > 50
+    const isRightSwipe = distance < -50
+    
+    if (isLeftSwipe && activePanel < portfolioItems.length - 1) {
+      // Handle left swipe - go to next panel
+      if (goPanelRef.current) {
+        goPanelRef.current(activePanel + 1);
+      }
+    }
+    
+    if (isRightSwipe && activePanel > 0) {
+      // Handle right swipe - go to previous panel
+      if (goPanelRef.current) {
+        goPanelRef.current(activePanel - 1);
+      }
+    }
+    
+    // Reset touch state
+    setTouchStart(null)
+    setTouchEnd(null)
+    setIsSwiping(false)
+  }, [touchStart, touchEnd, activePanel]);
   
   useEffect(() => {
     // Check if we're on mobile
@@ -117,10 +280,6 @@ export default function PortfolioShowcase() {
     isMobile ? ["30px", "-30px"] : ["100px", "-100px"]
   )
   const opacity = useTransform(scrollYProgress, [0, 0.15, 0.8, 1], [0, 1, 1, 0])
-
-  // Store ScrollTrigger instance in a ref to avoid recreating it on re-renders
-  const scrollTriggerRef = useRef<any>(null);
-  const timelineRef = useRef<any>(null);
 
   // Initialize GSAP ScrollTrigger for horizontal scrolling
   useEffect(() => {
@@ -304,60 +463,58 @@ export default function PortfolioShowcase() {
           {/* Horizontal Scrolling Portfolio Section */}
           <div 
             ref={trackRef} 
-            className="flex flex-nowrap gap-4 md:gap-8 items-start justify-start min-h-[35vh] md:min-h-[45vh] -mt-0 mb-2 mx-auto relative z-20"
+            className={`flex flex-nowrap gap-4 md:gap-8 items-start justify-start min-h-[35vh] md:min-h-[45vh] -mt-0 mb-2 mx-auto relative z-20 ${isMobile ? 'touch-action-none' : ''}`}
+            onTouchStart={isMobile ? handleTouchStart : undefined}
+            onTouchMove={isMobile ? handleTouchMove : undefined}
+            onTouchEnd={isMobile ? handleTouchEnd : undefined}
+            style={{ 
+              willChange: isMobile ? 'transform' : 'auto'
+            }}
           >
-            {portfolioItems.map((item, index) => {
-              // Determine if this item is active
-              const isActive = index === activePanel;
-              
-              return (
-                <div 
-                  key={item.id}
-                  className={`shrink-0 w-[85vw] sm:w-[80vw] md:w-[70vw] lg:w-[55vw] transition-all duration-500 ${
-                    isActive 
-                      ? "scale-100 opacity-100 transform-gpu" 
-                      : "scale-[0.85] opacity-30 blur-[1px]"
-                  }`}
-                  style={{
-                    zIndex: isActive ? 10 : 0,
-                    transition: "all 0.5s ease-out"
-                  }}
-                >
-                  <CardSpotlight
-                    className="bg-[#111622]/80 rounded-lg overflow-hidden shadow-lg border border-[#2a3546] no-hover"
-                    radius={450}
-                    color="#2a3546"
-                  >
-                    <div className="aspect-[16/12] sm:aspect-[16/10] md:aspect-[16/7] relative bg-[#0f1520]">
-                      <LaptopAnimation 
-                        desktopImage={item.image}
-                        mobileImage={item.mobileImage}
-                      />
-                    </div>
-                    <div className="p-2 md:p-4">
-                      <h3 className="text-base md:text-xl font-semibold text-white mb-0.5 md:mb-1">{item.title}</h3>
-                      <p className="text-[#a0b1c5] text-xs md:text-base max-w-lg">{item.description}</p>
-                      <Button
-                        variant="nav"
-                        size="sm"
-                        className="mt-1 md:mt-2"
-                        asChild
-                      >
-                        <Link href={`/projects/${item.slug}`}>
-                          View Project
-                        </Link>
-                      </Button>
-                    </div>
-                  </CardSpotlight>
-                </div>
-              );
-            })}
+            {portfolioItems.map((item, index) => (
+              <PortfolioItemComponent 
+                key={item.id} 
+                item={item} 
+                isActive={index === activePanel} 
+              />
+            ))}
           </div>
         </div>
       </section>
 
+      {/* Mobile navigation buttons for swiping alternative */}
+      {isMobile && (
+        <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 flex gap-10 text-center md:hidden z-[999]">
+          <button 
+            onClick={() => activePanel > 0 && goToPanel(activePanel - 1)}
+            className={`w-10 h-10 rounded-full flex items-center justify-center ${
+              activePanel === 0 ? 'opacity-30 cursor-not-allowed' : 'bg-[#1c2534] opacity-70 hover:opacity-100'
+            }`}
+            disabled={activePanel === 0}
+            aria-label="Previous project"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+          
+          <button 
+            onClick={() => activePanel < portfolioItems.length - 1 && goToPanel(activePanel + 1)}
+            className={`w-10 h-10 rounded-full flex items-center justify-center ${
+              activePanel === portfolioItems.length - 1 ? 'opacity-30 cursor-not-allowed' : 'bg-[#1c2534] opacity-70 hover:opacity-100'
+            }`}
+            disabled={activePanel === portfolioItems.length - 1}
+            aria-label="Next project"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
+        </div>
+      )}
+
       {/* Scroll hint for mobile - fixed position outside the section flow */}
-      {isMobile && !isFooterVisible && (
+      {isMobile && !isFooterVisible && !isSwiping && (
         <div className="fixed bottom-10 left-1/2 transform -translate-x-1/2 text-center md:hidden z-[999]">
           <div className="flex flex-col items-center">
             <motion.div 
@@ -395,6 +552,40 @@ export default function PortfolioShowcase() {
             >
               SCROLL
             </motion.p>
+          </div>
+        </div>
+      )}
+
+      {/* Swipe indicators - show arrows when swiping */}
+      {isMobile && isSwiping && swipeDirection && swipeDistance > 20 && (
+        <div className="fixed inset-0 pointer-events-none z-[1000] flex items-center justify-center">
+          <div 
+            className={`bg-[#1c2534]/30 backdrop-blur-sm rounded-full p-6 transform transition-all duration-300 ${
+              swipeDirection === 'left' 
+                ? 'translate-x-10' 
+                : '-translate-x-10'
+            }`}
+            style={{
+              opacity: Math.min(0.8, swipeDistance / 150)
+            }}
+          >
+            {swipeDirection === 'left' ? (
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                {activePanel < portfolioItems.length - 1 ? (
+                  <path d="M9 18l6-6-6-6" />
+                ) : (
+                  <path d="M6 18l6-6-6-6" className="opacity-30" />
+                )}
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                {activePanel > 0 ? (
+                  <path d="M15 18l-6-6 6-6" />
+                ) : (
+                  <path d="M15 18l-6-6 6-6" className="opacity-30" />
+                )}
+              </svg>
+            )}
           </div>
         </div>
       )}
