@@ -35,7 +35,7 @@ const PortfolioItemComponent = memo(({
 }) => {
   return (
     <div 
-      className={`shrink-0 w-[85vw] sm:w-[80vw] md:w-[70vw] lg:w-[55vw] transition-all duration-500 ${
+      className={`transition-all duration-500 ${
         isActive 
           ? "scale-100 opacity-100 transform-gpu" 
           : "scale-[0.85] opacity-30 blur-[1px]"
@@ -144,13 +144,47 @@ export default function PortfolioShowcase() {
   // Track if footer is visible to hide scroll indicator
   const [isFooterVisible, setIsFooterVisible] = useState(false)
   
+  // For touch swiping, let's add some variables to track manual dragging
+  const draggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const currentOffsetRef = useRef(0);
+  
   // Function to navigate to a specific panel with useCallback
   const goToPanel = useCallback((index: number) => {
     if (index < 0 || index >= portfolioItems.length) return
     
     setActivePanel(index)
     
-    // Calculate the appropriate scroll position for the panel
+    // For mobile, we handle the sliding directly
+    if (isMobile && trackRef.current) {
+      const track = trackRef.current;
+      const viewportWidth = window.innerWidth;
+      
+      // Find the target slide
+      const targetSlide = track.children[index] as HTMLElement;
+      if (targetSlide) {
+        const slideWidth = targetSlide.offsetWidth;
+        const slideLeft = targetSlide.offsetLeft;
+        
+        // Adjust position to be slightly left of center (visual correction)
+        // Smaller screens need less offset
+        const leftOffsetPercentage = Math.min(0.12, Math.max(0.08, viewportWidth / 5000));
+        const leftOffset = viewportWidth * leftOffsetPercentage;
+        const leftPosition = (viewportWidth - slideWidth) / 2 - leftOffset;
+        const targetPosition = leftPosition - slideLeft;
+        
+        // Animate to that position
+        gsap.to(track, {
+          x: targetPosition,
+          duration: 0.4,
+          ease: "power2.out"
+        });
+      }
+      
+      return;
+    }
+    
+    // Desktop scroll logic
     if (scrollTriggerRef.current) {
       const scrollInstance = scrollTriggerRef.current
       const panelCount = portfolioItems.length
@@ -170,7 +204,7 @@ export default function PortfolioShowcase() {
         ease: "power2.out"
       })
     }
-  }, []);
+  }, [isMobile]);
   
   // Update the ref whenever goToPanel changes
   useEffect(() => {
@@ -179,55 +213,89 @@ export default function PortfolioShowcase() {
   
   // Optimize event handlers with useCallback
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX)
-    setIsSwiping(true)
-    setSwipeDirection(null)
-    setSwipeDistance(0)
-  }, []);
-  
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (touchStart) {
-      const currentTouch = e.targetTouches[0].clientX
-      setTouchEnd(currentTouch)
-      
-      const distance = touchStart - currentTouch
-      setSwipeDistance(Math.abs(distance))
-      
-      if (distance > 10) {
-        setSwipeDirection('left')
-      } else if (distance < -10) {
-        setSwipeDirection('right')
-      } else {
-        setSwipeDirection(null)
+    const track = trackRef.current;
+    if (!track || !isMobile) return;
+    
+    // Get the current transform value
+    const transform = window.getComputedStyle(track).transform;
+    let currentX = 0;
+    
+    // Parse the transform matrix to get current X position
+    if (transform && transform !== 'none') {
+      const matrix = transform.match(/matrix.*\((.+)\)/);
+      if (matrix) {
+        const values = matrix[1].split(', ');
+        currentX = parseFloat(values[4] || '0');
       }
     }
-  }, [touchStart]);
+    
+    // Store the current X position and touch start position
+    currentOffsetRef.current = currentX;
+    startXRef.current = e.targetTouches[0].clientX;
+    draggingRef.current = true;
+    
+    // Also update state for visual feedback
+    setTouchStart(e.targetTouches[0].clientX);
+    setIsSwiping(true);
+    setSwipeDirection(null);
+    setSwipeDistance(0);
+  }, [isMobile]);
+  
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    const track = trackRef.current;
+    if (!track || !isMobile || !draggingRef.current) return;
+    
+    const currentTouch = e.targetTouches[0].clientX;
+    const deltaX = currentTouch - startXRef.current;
+    
+    // Apply direct transform during drag for immediate feedback
+    const newX = currentOffsetRef.current + deltaX;
+    gsap.set(track, { x: newX });
+    
+    // Update state for visual indicators
+    setTouchEnd(currentTouch);
+    const distance = startXRef.current - currentTouch;
+    setSwipeDistance(Math.abs(distance));
+    
+    if (distance > 10) {
+      setSwipeDirection('left');
+    } else if (distance < -10) {
+      setSwipeDirection('right');
+    } else {
+      setSwipeDirection(null);
+    }
+  }, [isMobile]);
   
   const handleTouchEnd = useCallback(() => {
-    if (!touchStart || !touchEnd) return
+    draggingRef.current = false;
     
-    const distance = touchStart - touchEnd
-    const isLeftSwipe = distance > 50
-    const isRightSwipe = distance < -50
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
     
     if (isLeftSwipe && activePanel < portfolioItems.length - 1) {
       // Handle left swipe - go to next panel
       if (goPanelRef.current) {
         goPanelRef.current(activePanel + 1);
       }
-    }
-    
-    if (isRightSwipe && activePanel > 0) {
+    } else if (isRightSwipe && activePanel > 0) {
       // Handle right swipe - go to previous panel
       if (goPanelRef.current) {
         goPanelRef.current(activePanel - 1);
       }
+    } else {
+      // If not enough distance for a swipe, snap back to current panel
+      if (goPanelRef.current) {
+        goPanelRef.current(activePanel);
+      }
     }
     
     // Reset touch state
-    setTouchStart(null)
-    setTouchEnd(null)
-    setIsSwiping(false)
+    setTouchStart(null);
+    setTouchEnd(null);
+    setIsSwiping(false);
   }, [touchStart, touchEnd, activePanel]);
   
   useEffect(() => {
@@ -302,24 +370,29 @@ export default function PortfolioShowcase() {
     const viewportWidth = window.innerWidth;
     const panelCount = portfolioItems.length;
     
-    // For mobile, we'll use swipe only, no scroll-based animation
+    // For mobile, we'll only setup the basic structure and let CSS handle transitions
     const isMobileView = window.innerWidth < 768;
     
     if (isMobileView) {
-      // Center the first panel on mobile
-      const firstPanel = track.children[0];
-      if (firstPanel) {
-        const panelWidth = firstPanel.getBoundingClientRect().width;
-        const centerOffset = Math.max(0, (viewportWidth - panelWidth) / 2);
-        
-        gsap.set(track, { 
-          paddingLeft: centerOffset,
-          paddingRight: centerOffset,
-        });
-      }
+      // Set initial centered position for first slide
+      setTimeout(() => {
+        if (track) {
+          // Initially center the first slide
+          const firstSlide = track.children[0] as HTMLElement;
+          if (firstSlide) {
+            const slideWidth = firstSlide.offsetWidth;
+            // Apply the same responsive leftward shift as in goToPanel
+            const leftOffsetPercentage = Math.min(0.12, Math.max(0.08, viewportWidth / 5000));
+            const leftOffset = viewportWidth * leftOffsetPercentage;
+            const leftPosition = (viewportWidth - slideWidth) / 2 - leftOffset;
+            gsap.set(track, { 
+              x: leftPosition
+            });
+          }
+        }
+      }, 100);
       
-      // On mobile, we don't need the ScrollTrigger for horizontal scroll
-      // Just make sure active panel is set to 0
+      // Ensure we're starting with panel 0
       setActivePanel(0);
       return;
     }
@@ -344,6 +417,22 @@ export default function PortfolioShowcase() {
       // Get updated track width with padding
       const totalTrackWidth = track.scrollWidth;
       
+      // Make sure the right edge of the last panel is fully visible when scrolled to end
+      const lastChild = track.children[track.children.length - 1] as HTMLElement;
+      if (lastChild) {
+        // Increase padding drastically to ensure the last item shifts far left
+        const extraPadding = 400; // Increased from 250 to 400
+        const lastPanelEndPosition = lastChild.offsetLeft + lastChild.offsetWidth + extraPadding;
+        const minTrackWidth = lastPanelEndPosition + centerOffset;
+        
+        // Set a minimum width to ensure the last panel can be fully scrolled into view
+        if (totalTrackWidth < minTrackWidth) {
+          gsap.set(track, {
+            width: minTrackWidth
+          });
+        }
+      }
+      
       // Calculate the appropriate section height based on viewport
       const viewportHeight = window.innerHeight;
       const sectionHeight = Math.max(
@@ -356,7 +445,7 @@ export default function PortfolioShowcase() {
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: `+=${sectionHeight}`,
+          end: `+=${sectionHeight * 1.15}`,
           pin: true,
           anticipatePin: 1,
           scrub: 1, // Smooth scrubbing
@@ -383,8 +472,8 @@ export default function PortfolioShowcase() {
             } else if (progress < segmentSize * 3) {
               // Third panel
               setActivePanel(2);
-            } else {
-              // Fourth panel
+            } else if (progress <= 1) {
+              // Fourth panel - ensure this triggers all the way to the end
               setActivePanel(3);
             }
           },
@@ -408,8 +497,18 @@ export default function PortfolioShowcase() {
 
       // Animate the track position to create the horizontal scrolling effect
       timelineRef.current.to(track, {
-        x: () => -(totalTrackWidth - viewportWidth),
+        x: () => {
+          // Calculate the exact endpoint that ensures the last panel is fully visible
+          // Increase the buffer drastically to shift content more to the left
+          return -(totalTrackWidth - viewportWidth + 400); // Increased from 250 to 400
+        },
         ease: "power1.inOut",
+      });
+
+      // Add even more right padding to the track to allow more leftward movement
+      gsap.set(track, { 
+        paddingLeft: centerOffset,
+        paddingRight: centerOffset + 350, // Increased from 200 to 350
       });
     };
 
@@ -493,26 +592,38 @@ export default function PortfolioShowcase() {
             </div>
           </motion.div>
           
-          {/* Horizontal Scrolling Portfolio Section */}
-          <div 
-            ref={trackRef} 
-            className={`flex flex-nowrap gap-4 md:gap-8 items-start justify-start min-h-[35vh] md:min-h-[45vh] -mt-0 mb-2 mx-auto relative z-20 ${isMobile ? 'touch-action-none' : ''}`}
-            onTouchStart={isMobile ? handleTouchStart : undefined}
-            onTouchMove={isMobile ? handleTouchMove : undefined}
-            onTouchEnd={isMobile ? handleTouchEnd : undefined}
-            style={{ 
-              willChange: isMobile ? 'transform' : 'auto',
-              transform: isMobile ? `translateX(${-100 * activePanel}%)` : undefined,
-              transition: isMobile ? 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)' : undefined
-            }}
-          >
-            {portfolioItems.map((item, index) => (
-              <PortfolioItemComponent 
-                key={item.id} 
-                item={item} 
-                isActive={index === activePanel} 
-              />
-            ))}
+          {/* Mobile swipe container - this is the fixed outer container */}
+          <div className={`${isMobile ? 'overflow-hidden' : 'overflow-visible'} min-h-[35vh] md:min-h-[45vh] relative z-20`}>
+            {/* Horizontal Scrolling Portfolio Section - this is the sliding track */}
+            <div 
+              ref={trackRef} 
+              className={`flex flex-nowrap gap-4 md:gap-8 items-start justify-start -mt-0 mb-2 mx-auto relative ${
+                isMobile ? 'touch-action-none' : ''
+              }`}
+              onTouchStart={isMobile ? handleTouchStart : undefined}
+              onTouchMove={isMobile ? handleTouchMove : undefined}
+              onTouchEnd={isMobile ? handleTouchEnd : undefined}
+              style={{ 
+                willChange: isMobile ? 'transform' : 'auto'
+                // Let GSAP handle the transform for more precise control
+              }}
+            >
+              {portfolioItems.map((item, index) => (
+                <div 
+                  key={item.id}
+                  className={`shrink-0 ${isMobile ? 'w-[80vw]' : 'w-[85vw] sm:w-[80vw] md:w-[70vw] lg:w-[55vw]'}`}
+                  style={{
+                    // Add extra margin to the last item in desktop view
+                    marginRight: !isMobile && index === portfolioItems.length - 1 ? '400px' : undefined
+                  }}
+                >
+                  <PortfolioItemComponent 
+                    item={item} 
+                    isActive={index === activePanel} 
+                  />
+                </div>
+              ))}
+            </div>
           </div>
           
           {/* Mobile navigation buttons - only inside the showcase section */}

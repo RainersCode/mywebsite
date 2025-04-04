@@ -39,11 +39,6 @@ export default function Navbar() {
       description: "Solutions we provide" 
     },
     { 
-      href: "#portfolio", 
-      label: "PORTFOLIO", 
-      description: "Our showcase work" 
-    },
-    { 
       href: "#process", 
       label: "PROCESS", 
       description: "How we work" 
@@ -135,9 +130,6 @@ export default function Navbar() {
         <nav className="hidden md:flex items-center space-x-8">
           <Link href="#services" className="text-sm tracking-wide text-[#c6d4e3] hover:text-white transition-colors">
             SERVICES
-          </Link>
-          <Link href="#portfolio" className="text-sm tracking-wide text-[#c6d4e3] hover:text-white transition-colors">
-            PORTFOLIO
           </Link>
           <Link href="#process" className="text-sm tracking-wide text-[#c6d4e3] hover:text-white transition-colors">
             PROCESS
