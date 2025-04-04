@@ -34,11 +34,6 @@ export default function Navbar() {
   // Navigation items with icons and descriptions
   const navItems = [
     { 
-      href: "#services", 
-      label: "SERVICES", 
-      description: "Solutions we provide" 
-    },
-    { 
       href: "/process", 
       label: "PROCESS", 
       description: "How we work" 
@@ -133,9 +128,6 @@ export default function Navbar() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <Link href="#services" className="text-sm tracking-wide text-[#c6d4e3] hover:text-white transition-colors">
-            SERVICES
-          </Link>
           <Link href="/process" className="text-sm tracking-wide text-[#c6d4e3] hover:text-white transition-colors">
             PROCESS
           </Link>
@@ -241,8 +233,8 @@ export default function Navbar() {
                     >
                       <div className="flex items-center justify-between">
                         <div>
-                          <div className="text-base text-white font-medium mb-0.5">{item.label}</div>
-                          <div className="text-[10px] text-[#a0b1c5]">{item.description}</div>
+                          <div className="text-sm text-white font-medium mb-0.5">{item.label}</div>
+                          <div className="text-[9px] text-[#a0b1c5]">{item.description}</div>
                         </div>
                         <motion.div 
                           className="w-6 h-6 rounded-full border border-[#3d4f69] flex items-center justify-center"
