@@ -51,7 +51,7 @@ export function ContactSection() {
     <section id="contact" className="py-20 relative overflow-hidden">
       <Container className="relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+          <h2 className="font-serif text-3xl md:text-4xl mb-4">
             Get in Touch
           </h2>
           <p className="text-[#c6d4e3] max-w-2xl mx-auto">

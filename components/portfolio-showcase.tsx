@@ -7,6 +7,7 @@ import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { CardSpotlight } from "@/components/ui/card-spotlight"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 // Register the ScrollTrigger plugin
 if (typeof window !== "undefined") {
@@ -20,21 +21,24 @@ const portfolioItems = [
     title: "Responsive E-Commerce",
     description: "Adaptive design with seamless shopping experience across all devices.",
     image: "/responsivedg/resdesk1.png",
-    mobileImage: "/responsivedg/respho1.png"
+    mobileImage: "/responsivedg/respho1.png",
+    slug: "responsive-ecommerce"
   },
   {
     id: 2,
     title: "Creative Portfolio",
     description: "Showcase of creative work with fluid animations and responsive layouts.",
     image: "/responsivedg/resdesk2.png",
-    mobileImage: "/responsivedg/respho2.png"
+    mobileImage: "/responsivedg/respho2.png",
+    slug: "creative-portfolio"
   },
   {
     id: 3,
     title: "Corporate Website",
     description: "Professional business site optimized for desktop, tablet, and mobile viewing.",
     image: "/responsivedg/resdesk3.png",
-    mobileImage: "/responsivedg/respho3.png"
+    mobileImage: "/responsivedg/respho3.png",
+    slug: "corporate-website"
   }
 ];
 
@@ -326,8 +330,11 @@ export default function PortfolioShowcase() {
                         variant="nav"
                         size="sm"
                         className="mt-1 md:mt-2"
+                        asChild
                       >
-                        View Project
+                        <Link href={`/projects/${item.slug}`}>
+                          View Project
+                        </Link>
                       </Button>
                     </div>
                   </CardSpotlight>

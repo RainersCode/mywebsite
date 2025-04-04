@@ -541,12 +541,12 @@ export default function HeroSection() {
           <div className="max-w-3xl mx-auto text-center">
             <div className="mb-6">
               <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight">
-                Beautiful Websites, <br />
-                <span className="bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] bg-clip-text text-transparent">Built Faster</span>
+                Building High-Performance, <br />
+                <span className="bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] bg-clip-text text-transparent">Visually Stunning Websites with Next.js & Framer</span>
               </h1>
             </div>
             <p className="text-zinc-400 text-lg md:text-xl mb-10 max-w-xl mx-auto">
-              Leveraging Framer to create stunning, high-performance websites for ambitious brands.
+              Transforming ideas into fast, engaging, and user-friendly digital experiences tailored to your unique needs.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button
@@ -575,12 +575,12 @@ export default function HeroSection() {
           <motion.div className="max-w-3xl mx-auto text-center" style={{ y: textY, opacity }}>
             <div className="mb-6">
               <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight">
-                Beautiful Websites, <br />
-                <span className="bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] bg-clip-text text-transparent">Built Faster</span>
+                Building High-Performance, <br />
+                <span className="bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c] bg-clip-text text-transparent">Visually Stunning Websites with Next.js & Framer</span>
               </h1>
             </div>
             <p className="text-zinc-400 text-lg md:text-xl mb-10 max-w-xl mx-auto">
-              Leveraging Framer to create stunning, high-performance websites for ambitious brands.
+              Transforming ideas into fast, engaging, and user-friendly digital experiences tailored to your unique needs.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button

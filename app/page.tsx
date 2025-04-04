@@ -2,7 +2,6 @@ import Navbar from "@/components/navbar"
 import HeroSection from "@/components/hero-section"
 import IntroSection from "@/components/intro-section"
 import PortfolioShowcase from "@/components/portfolio-showcase"
-import ServicesSection from "@/components/services-section"
 import ProcessSection from "@/components/process-section"
 import TestimonialsSection from "@/components/testimonials-section"
 import CtaSection from "@/components/cta-section"
@@ -17,7 +16,6 @@ export default function Home() {
         <HeroSection />
         <IntroSection />
         <PortfolioShowcase />
-        <ServicesSection />
         <ProcessSection />
         <TestimonialsSection />
         <CtaSection />
