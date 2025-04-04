@@ -56,8 +56,8 @@ export function ParticlesBackground({ visibility = "normal" }: ParticlesBackgrou
         },
         modes: {
           repulse: {
-            distance: visibility === "enhanced" ? 70 : 60, // Enhanced repulse distance on home page
-            duration: visibility === "enhanced" ? 0.3 : 0.2,
+            distance: visibility === "enhanced" ? 90 : 70, // Enhanced repulse distance on home page
+            duration: visibility === "enhanced" ? 0.4 : 0.3,
           },
         },
       },
@@ -69,12 +69,12 @@ export function ParticlesBackground({ visibility = "normal" }: ParticlesBackgrou
           color: "#5d7b9c",
           distance: 150,
           enable: true,
-          opacity: visibility === "enhanced" ? 0.4 : 0.3 * opacityMultiplier,
-          width: 1,
+          opacity: visibility === "enhanced" ? 0.6 : 0.5 * opacityMultiplier,
+          width: 1.5,
         },
         move: {
           enable: true,
-          speed: visibility === "enhanced" ? 0.7 : (visibility === "reduced" ? 0.5 : 0.6), // Speed based on visibility
+          speed: visibility === "enhanced" ? 1 : (visibility === "reduced" ? 0.7 : 0.8), // Speed based on visibility
           direction: "none" as const,
           random: false,
           straight: false,
@@ -85,23 +85,23 @@ export function ParticlesBackground({ visibility = "normal" }: ParticlesBackgrou
         number: {
           density: {
             enable: true,
-            area: visibility === "enhanced" ? 800 : 1000, // Smaller area = more particles for enhanced
+            area: visibility === "enhanced" ? 700 : 800, // Smaller area = more particles for enhanced
           },
-          value: visibility === "enhanced" ? 40 : (visibility === "reduced" ? 20 : 30), // More particles for enhanced
+          value: visibility === "enhanced" ? 60 : (visibility === "reduced" ? 30 : 45), // More particles for enhanced
         },
         opacity: {
-          value: visibility === "enhanced" ? 0.3 : (0.2 * opacityMultiplier), // Higher opacity for enhanced
+          value: visibility === "enhanced" ? 0.8 : (0.4 * opacityMultiplier), // Higher opacity for enhanced
         },
         shape: {
           type: "circle" as const,
         },
         size: {
-          value: { min: 1, max: visibility === "enhanced" ? 3 : 2 }, // Larger particles for enhanced
+          value: { min: 1, max: visibility === "enhanced" ? 4 : 3 }, // Larger particles for enhanced
         },
       },
       detectRetina: false, // Disable retina detection for performance
     } 
-    : 
+    :
     {
       // Desktop settings - optimized based on visibility
       fpsLimit: 60,
@@ -115,8 +115,8 @@ export function ParticlesBackground({ visibility = "normal" }: ParticlesBackgrou
         },
         modes: {
           repulse: {
-            distance: visibility === "enhanced" ? 120 : (visibility === "reduced" ? 70 : 100), // Enhanced repulsion for home page
-            duration: visibility === "enhanced" ? 0.5 : (visibility === "reduced" ? 0.3 : 0.4),
+            distance: visibility === "enhanced" ? 150 : (visibility === "reduced" ? 70 : 120), // Enhanced repulsion for home page
+            duration: visibility === "enhanced" ? 0.6 : (visibility === "reduced" ? 0.3 : 0.5),
           },
         },
       },
@@ -128,8 +128,8 @@ export function ParticlesBackground({ visibility = "normal" }: ParticlesBackgrou
           color: "#5d7b9c",
           distance: 150,
           enable: true,
-          opacity: visibility === "enhanced" ? 0.6 : (0.5 * opacityMultiplier),
-          width: visibility === "enhanced" ? 1.2 : 1,
+          opacity: visibility === "enhanced" ? 0.8 : (0.6 * opacityMultiplier),
+          width: visibility === "enhanced" ? 1.5 : 1.2,
         },
         move: {
           enable: true,
@@ -138,24 +138,24 @@ export function ParticlesBackground({ visibility = "normal" }: ParticlesBackgrou
             default: "bounce" as const,
           },
           random: true,
-          speed: visibility === "enhanced" ? 1.2 : (visibility === "reduced" ? 0.6 : 1),
+          speed: visibility === "enhanced" ? 1.5 : (visibility === "reduced" ? 0.6 : 1.2),
           straight: false,
         },
         number: {
           density: {
             enable: true,
-            area: visibility === "enhanced" ? 700 : 800,
+            area: visibility === "enhanced" ? 600 : 700,
           },
-          value: visibility === "enhanced" ? 100 : (visibility === "reduced" ? 50 : 80), // More particles for enhanced
+          value: visibility === "enhanced" ? 120 : (visibility === "reduced" ? 50 : 100), // More particles for enhanced
         },
         opacity: {
-          value: visibility === "enhanced" ? 0.4 : (0.3 * opacityMultiplier),
+          value: visibility === "enhanced" ? 0.5 : (0.4 * opacityMultiplier),
         },
         shape: {
           type: "circle" as const,
         },
         size: {
-          value: { min: 1, max: visibility === "enhanced" ? 4 : 3 },
+          value: { min: 1, max: visibility === "enhanced" ? 5 : 4 },
         },
       },
       detectRetina: true,

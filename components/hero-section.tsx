@@ -412,8 +412,9 @@ export default function HeroSection() {
                 asChild
                 variant="nav"
                 size="lg"
+                className="w-full sm:w-48"
               >
-                <Link href="#portfolio">
+                <Link href="/projects">
                   VIEW SHOWCASE
                 </Link>
               </Button>
@@ -421,9 +422,9 @@ export default function HeroSection() {
                 asChild
                 variant="nav"
                 size="lg"
-                className="bg-gradient-to-r from-[#141b27] to-[#1c2534] border-[#4d5f79] hover:border-[#a0b1c5] hover:bg-gradient-to-r hover:from-[#15202f] hover:to-[#1f2a3c]"
+                className="w-full sm:w-48 bg-gradient-to-r from-[#141b27] to-[#1c2534] border-[#4d5f79] hover:border-[#a0b1c5] hover:bg-gradient-to-r hover:from-[#15202f] hover:to-[#1f2a3c]"
               >
-                <Link href="#contact">
+                <Link href="/project-kickoff">
                   START YOUR PROJECT
                 </Link>
               </Button>
@@ -446,8 +447,9 @@ export default function HeroSection() {
                 asChild
                 variant="nav"
                 size="lg"
+                className="w-full sm:w-48"
               >
-                <Link href="#portfolio">
+                <Link href="/projects">
                   VIEW SHOWCASE
                 </Link>
               </Button>
@@ -455,9 +457,9 @@ export default function HeroSection() {
                 asChild
                 variant="nav"
                 size="lg"
-                className="bg-gradient-to-r from-[#141b27] to-[#1c2534] border-[#4d5f79] hover:border-[#a0b1c5] hover:bg-gradient-to-r hover:from-[#15202f] hover:to-[#1f2a3c]"
+                className="w-full sm:w-48 bg-gradient-to-r from-[#141b27] to-[#1c2534] border-[#4d5f79] hover:border-[#a0b1c5] hover:bg-gradient-to-r hover:from-[#15202f] hover:to-[#1f2a3c]"
               >
-                <Link href="#contact">
+                <Link href="/project-kickoff">
                   START YOUR PROJECT
                 </Link>
               </Button>
