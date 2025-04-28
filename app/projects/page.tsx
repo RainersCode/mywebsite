@@ -150,7 +150,12 @@ export default function ProjectsPage() {
                         </div>
                         <h2 className="font-serif text-xl mb-2 transition-colors duration-300 group-hover:text-white">{project.title}</h2>
                         <p className="text-[#a0b1c5] mb-4 line-clamp-2 group-hover:text-[#c6d4e3] transition-colors duration-300">{project.description}</p>
-                        <Button asChild variant="nav" size="sm" className="opacity-90 group-hover:opacity-100 transition-opacity duration-300">
+                        <Button 
+                          asChild 
+                          variant="default"
+                          size="sm" 
+                          className="opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                        >
                           <Link href={`/projects/${project.slug}`}>
                             View Details
                           </Link>

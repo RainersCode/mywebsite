@@ -129,7 +129,7 @@ export function ContactSection() {
                   type="submit"
                   size="lg"
                   disabled={sending}
-                  variant="nav"
+                  variant="default"
                   className="w-full"
                 >
                   {sending ? "SENDING..." : "SEND MESSAGE"}

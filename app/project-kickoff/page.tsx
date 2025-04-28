@@ -310,7 +310,7 @@ export default function ProjectKickoffPage() {
                             <Button 
                               type="button" 
                               onClick={nextSection}
-                              variant="nav"
+                              variant="default"
                             >
                               Next Section
                             </Button>
@@ -441,7 +441,7 @@ Competitor 2: https://competitor2.com"
                             <Button 
                               type="button" 
                               onClick={nextSection}
-                              variant="nav"
+                              variant="default"
                             >
                               Next Section
                             </Button>
@@ -542,7 +542,7 @@ Competitor 2: https://competitor2.com"
                             <Button 
                               type="button" 
                               onClick={nextSection}
-                              variant="nav"
+                              variant="default"
                             >
                               Next Section
                             </Button>
@@ -718,7 +718,7 @@ Why: Design feels outdated"
                             <Button 
                               type="button" 
                               onClick={nextSection}
-                              variant="nav"
+                              variant="default"
                             >
                               Next Section
                             </Button>
@@ -919,7 +919,7 @@ Why: Design feels outdated"
                             <Button 
                               type="button" 
                               onClick={nextSection}
-                              variant="nav"
+                              variant="default"
                             >
                               Next Section
                             </Button>

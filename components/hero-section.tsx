@@ -77,12 +77,12 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <Button asChild size="lg" variant="default">
+            <Button asChild variant="default" size="lg">
               <Link href="/projects">View Our Work</Link>
-              </Button>
-            <Button asChild size="lg" variant="outline">
+            </Button>
+            <Button asChild variant="default" size="lg">
               <Link href="#contact">Get a Free Quote</Link>
-              </Button>
+            </Button>
           </motion.div>
         </motion.div>
 
@@ -99,34 +99,6 @@ export default function HeroSection() {
           <LaptopAnimation />
         </motion.div>
       </div>
-
-      {/* Scroll Down Indicator - Only show if not mobile */} 
-      {!isMobile && (
-        <motion.div 
-          className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20"
-          style={{ opacity }} // Fades out with scroll
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 1 }}
-        >
-          <div className="w-6 h-10 border-2 border-[#5d7b9c] rounded-full flex justify-center items-start p-1">
-            <motion.div
-              className="w-1 h-2 bg-[#a0b1c5] rounded-full"
-              animate={{
-                y: ["0%", "100%", "0%"],
-                opacity: [1, 0.5, 1]
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                repeatType: "loop",
-                ease: "easeInOut"
-              }}
-            />
-          </div>
-          <p className="text-xs text-[#5d7b9c] mt-2 tracking-widest">SCROLL</p>
-        </motion.div>
-      )}
     </section>
   )
 }

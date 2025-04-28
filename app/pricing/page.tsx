@@ -280,9 +280,8 @@ export default function PricingPage() {
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Button
                   asChild
-                  variant="nav"
+                  variant="default"
                   size="lg"
-                  className="bg-gradient-to-r from-[#141b27] to-[#1c2534] border-[#4d5f79] hover:border-[#a0b1c5] hover:bg-gradient-to-r hover:from-[#15202f] hover:to-[#1f2a3c]"
                 >
                   <Link href="#contact">
                     Get Your Free Quote
@@ -290,9 +289,8 @@ export default function PricingPage() {
                 </Button>
                 <Button
                   asChild
-                  variant="outline"
+                  variant="default"
                   size="lg"
-                  className="border-[#2a3546] text-[#a0b1c5] hover:text-white hover:border-[#4d5f79]"
                 >
                   <Link href="/process">
                     Learn About Our Process

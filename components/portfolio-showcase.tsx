@@ -61,7 +61,7 @@ const PortfolioItemComponent = memo(({
           <h3 className="text-base md:text-xl font-semibold text-white mb-0.5 md:mb-1">{item.title}</h3>
           <p className="text-[#a0b1c5] text-xs md:text-base max-w-lg">{item.description}</p>
           <Button
-            variant="nav"
+            variant="default"
             size="sm"
             className="mt-1 md:mt-2"
             asChild

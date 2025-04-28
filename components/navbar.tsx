@@ -5,6 +5,7 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { Menu, X } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
+import { Button } from "@/components/ui/button"
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -145,12 +146,9 @@ export default function Navbar() {
           <Link href="/project-kickoff" className="text-sm tracking-wide text-[#c6d4e3] hover:text-white transition-colors">
             START PROJECT
           </Link>
-          <Link
-            href="#contact"
-            className="text-sm px-5 py-2 border border-[#3d4f69] hover:border-[#a0b1c5] text-[#c6d4e3] hover:text-white transition-colors"
-          >
-            CONTACT
-          </Link>
+          <Button asChild variant="default" size="sm">
+            <Link href="#contact">CONTACT</Link>
+          </Button>
         </nav>
 
         {/* Mobile Menu Button */}

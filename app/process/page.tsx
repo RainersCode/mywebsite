@@ -225,13 +225,10 @@ export default function ProcessPage() {
                 </p>
                 <Button
                   asChild
-                  variant="nav"
+                  variant="default"
                   size="lg"
-                  className="bg-gradient-to-r from-[#141b27] to-[#1c2534] border-[#4d5f79] hover:border-[#a0b1c5] hover:bg-gradient-to-r hover:from-[#15202f] hover:to-[#1f2a3c]"
                 >
-                  <Link href="#contact">
-                    Get in Touch
-                  </Link>
+                  <Link href="#contact">Get in Touch</Link>
                 </Button>
               </div>
             </div>

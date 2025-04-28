@@ -38,7 +38,7 @@ export default function CtaSection() {
 
             <Button
               asChild
-              variant="nav"
+              variant="default"
               size="lg"
             >
               <Link href="#contact">
