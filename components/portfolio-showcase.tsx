@@ -51,13 +51,13 @@ const PortfolioItemComponent = memo(({
         radius={450}
         color="#2a3546"
       >
-        <div className="aspect-[16/12] sm:aspect-[16/10] md:aspect-[16/7] relative bg-[#0f1520]">
+        <div className="aspect-[16/10] sm:aspect-[16/9] md:aspect-[16/8] relative">
           <LaptopAnimation 
             desktopImage={item.image}
             mobileImage={item.mobileImage}
           />
         </div>
-        <div className="p-2 md:p-4">
+        <div className="">
           <h3 className="text-base md:text-xl font-semibold text-white mb-0.5 md:mb-1">{item.title}</h3>
           <p className="text-[#a0b1c5] text-xs md:text-base max-w-lg">{item.description}</p>
           <Button
@@ -556,17 +556,13 @@ export default function PortfolioShowcase() {
       <section
         id="portfolio"
         ref={sectionRef}
-        className="py-8 md:py-12 bg-gradient-to-b from-[#0f1520] to-[#141b27] relative overflow-hidden isolation"
+        className="pt-16 md:pt-24 pb-8 md:pb-12 mt-16 relative overflow-hidden isolation"
       >
-        {/* Add a fixed background to prevent content from showing through */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0f1520] to-[#141b27] z-0"></div>
-
         {/* Background Elements - Removed */}
         <div className="container mx-auto px-10 md:px-6 relative flex flex-col h-full">
           <motion.div 
             ref={titleRef} 
-            className="text-center mb-0 md:mb-4 relative z-30" 
-            style={{ y, opacity }}
+            className="text-center mb-8 md:mb-4 relative z-30"
           >
             <div className="inline-block px-4 py-1 mb-2 bg-[#1c2534] rounded-full relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-[#a0b1c5]/10 via-[#8faabe]/10 to-[#5d7b9c]/10" />
@@ -611,7 +607,7 @@ export default function PortfolioShowcase() {
               {portfolioItems.map((item, index) => (
                 <div 
                   key={item.id}
-                  className={`shrink-0 ${isMobile ? 'w-[80vw]' : 'w-[85vw] sm:w-[80vw] md:w-[70vw] lg:w-[55vw]'}`}
+                  className={`shrink-0 ${isMobile ? 'w-[80vw]' : 'w-[80vw] sm:w-[55vw] md:w-[45vw] lg:w-[35vw]'}`}
                   style={{
                     // Add extra margin to the last item in desktop view
                     marginRight: !isMobile && index === portfolioItems.length - 1 ? '400px' : undefined
