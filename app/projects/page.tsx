@@ -78,7 +78,7 @@ export default function ProjectsPage() {
               </div>
               <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-6">Responsive Design Projects</h1>
               <p className="text-[#a0b1c5] text-lg md:text-xl max-w-3xl mx-auto mb-8">
-                Explore our responsive design projects showcasing adaptive layouts for all devices.
+                Explore our responsive design projects showcasing adaptive layouts for all devices
               </p>
             </div>
           </div>
