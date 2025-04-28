@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ParticlesBackground } from "@/components/ui/particles-background"
 import LaptopAnimation from "./laptop-animation"
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
 
 export default function HeroSection() {
   const ref = useRef<HTMLDivElement>(null)
@@ -61,15 +62,21 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
+            {/* Restore original h1 structure with gradient span */}
             Websites Crafted with <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a0b1c5] to-[#5d7b9c]">Precision & Flair</span>
           </motion.h1>
           <motion.p 
-            className="text-lg sm:text-xl text-[#a0b1c5] mb-10 max-w-2xl mx-auto lg:mx-0" // Removed mx-auto for lg
+            className="text-lg sm:text-xl text-[#a0b1c5] mb-10 max-w-2xl mx-auto lg:mx-0" // Keep margin and max-width here
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            We build stunning, high-performance websites using Framer, blending design excellence with seamless user experiences.
+            <TextGenerateEffect 
+              words="We build stunning, high-performance websites using Framer, blending design excellence with seamless user experiences." 
+              className="text-lg sm:text-xl text-[#a0b1c5]" 
+              filter={false} 
+              duration={0.6} 
+            />
           </motion.p>
           <motion.div 
             className="flex flex-col sm:flex-row justify-center lg:justify-start items-center gap-4" // Adjusted justification for lg
